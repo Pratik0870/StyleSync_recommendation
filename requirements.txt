@@ -1,0 +1,16 @@
+# Backend and data pipeline. Pinned to the versions the test suite is green on.
+fastapi==0.125.0
+uvicorn==0.38.0
+pydantic==2.11.7
+python-dotenv==1.2.1
+
+pandas==2.3.3
+pyarrow==21.0.0
+numpy==2.3.5
+scikit-learn==1.7.2          # TF-IDF text relevance in src/engine/relevance.py
+pillow==12.0.0
+
+# Intent extraction. The API runs without either of these - it falls back to a
+# deterministic parser when no key is configured.
+google-genai==1.52.0
+anthropic==0.122.0

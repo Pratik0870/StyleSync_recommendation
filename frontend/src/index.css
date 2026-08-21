@@ -1,0 +1,98 @@
+@import "tailwindcss";
+
+/* --------------------------------------------------------------------------
+   Design tokens
+
+   An original identity for this product: warm ivory paper, deep ink, a berry
+   accent for actions and a muted gold for the "match" signals that run through
+   the recommendation logic itself (metallic pairings, scores). Display type is
+   a high-contrast serif, UI type a neutral sans - the pairing fashion retail
+   uses, without copying anyone's layout.
+   -------------------------------------------------------------------------- */
+
+@theme {
+  --color-paper: #fbf8f5;
+  --color-paper-raised: #ffffff;
+  --color-mist: #f0eae3;
+  --color-line: #e4dcd3;
+  --color-ink: #16131a;
+  --color-ink-soft: #4a444f;
+  --color-ink-faint: #857d88;
+  --color-berry: #7a2b45;
+  --color-berry-deep: #5c1f33;
+  --color-berry-wash: #f6ecef;
+  --color-gold: #b0894f;
+  --color-gold-wash: #f7f0e4;
+
+  --font-display: "Fraunces", "Iowan Old Style", Georgia, serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  --radius-card: 14px;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection {
+    background: var(--color-berry);
+    color: #fff;
+  }
+
+  /* Visible focus everywhere, since this is a keyboard-usable product. */
+  :focus-visible {
+    outline: 2px solid var(--color-berry);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+}
+
+@layer utilities {
+  .font-display {
+    font-family: var(--font-display);
+    font-optical-sizing: auto;
+  }
+
+  .shimmer {
+    background: linear-gradient(
+      100deg,
+      var(--color-mist) 20%,
+      #f7f2ec 42%,
+      var(--color-mist) 64%
+    );
+    background-size: 220% 100%;
+    animation: shimmer 1.4s ease-in-out infinite;
+  }
+
+  @keyframes shimmer {
+    to {
+      background-position: -180% 0;
+    }
+  }
+
+  .rise {
+    animation: rise 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .shimmer,
+    .rise {
+      animation: none;
+    }
+  }
+}

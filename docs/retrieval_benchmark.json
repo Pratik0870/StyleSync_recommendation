@@ -1,0 +1,109 @@
+{
+  "k": 10,
+  "queries": 12,
+  "results": {
+    "structured": {
+      "mean_precision_at_10": 1.0,
+      "per_query": {
+        "red matte lipstick for a wedding": 1.0,
+        "deep brown lipstick, elegant look": 1.0,
+        "pink nail polish for a party": 1.0,
+        "black kajal eyeliner": 1.0,
+        "gold earrings for a traditional look": 1.0,
+        "silver necklace, minimal style": 1.0,
+        "black heels for an evening event": 1.0,
+        "beige flat sandals for daywear": 1.0,
+        "gold clutch bag for a wedding": 1.0,
+        "red handbag, bold and modern": 1.0,
+        "green saree for a festive occasion": 1.0,
+        "blue printed dress for a party": 1.0
+      },
+      "note": "attribute filter only; correct by construction - the reference bar"
+    },
+    "tfidf": {
+      "mean_precision_at_10": 0.8417,
+      "per_query": {
+        "red matte lipstick for a wedding": 0.9,
+        "deep brown lipstick, elegant look": 0.5,
+        "pink nail polish for a party": 0.9,
+        "black kajal eyeliner": 0.8,
+        "gold earrings for a traditional look": 1.0,
+        "silver necklace, minimal style": 1.0,
+        "black heels for an evening event": 1.0,
+        "beige flat sandals for daywear": 0.3,
+        "gold clutch bag for a wedding": 1.0,
+        "red handbag, bold and modern": 1.0,
+        "green saree for a festive occasion": 0.9,
+        "blue printed dress for a party": 0.8
+      },
+      "fit_seconds": 0.76,
+      "mean_query_ms": 15.73,
+      "vocabulary": 18759
+    },
+    "embeddings": {
+      "model": "all-MiniLM-L6-v2",
+      "mean_precision_at_10": 0.9167,
+      "per_query": {
+        "red matte lipstick for a wedding": 1.0,
+        "deep brown lipstick, elegant look": 0.8,
+        "pink nail polish for a party": 0.9,
+        "black kajal eyeliner": 1.0,
+        "gold earrings for a traditional look": 1.0,
+        "silver necklace, minimal style": 1.0,
+        "black heels for an evening event": 1.0,
+        "beige flat sandals for daywear": 0.6,
+        "gold clutch bag for a wedding": 0.7,
+        "red handbag, bold and modern": 1.0,
+        "green saree for a festive occasion": 1.0,
+        "blue printed dress for a party": 1.0
+      },
+      "encode_seconds": 210.1,
+      "mean_query_ms": 18.78,
+      "dimensions": 384
+    },
+    "residual_text_value": {
+      "printed in ethnic_wear": {
+        "pool_size": 2944,
+        "products_with_term": 1386,
+        "base_rate": 0.4708,
+        "tfidf_precision_at_10": 1.0,
+        "unranked_baseline_precision_at_10": 0.0
+      },
+      "solid in topwear": {
+        "pool_size": 12078,
+        "products_with_term": 651,
+        "base_rate": 0.0539,
+        "tfidf_precision_at_10": 1.0,
+        "unranked_baseline_precision_at_10": 0.1
+      },
+      "silk in ethnic_wear": {
+        "pool_size": 2944,
+        "products_with_term": 32,
+        "base_rate": 0.0109,
+        "tfidf_precision_at_10": 1.0,
+        "unranked_baseline_precision_at_10": 0.0
+      },
+      "classic in any category": {
+        "pool_size": 37759,
+        "products_with_term": 403,
+        "base_rate": 0.0107,
+        "tfidf_precision_at_10": 1.0,
+        "unranked_baseline_precision_at_10": 0.0
+      },
+      "matte in beauty_lip": {
+        "pool_size": 425,
+        "products_with_term": 62,
+        "base_rate": 0.1459,
+        "tfidf_precision_at_10": 1.0,
+        "unranked_baseline_precision_at_10": 0.0
+      },
+      "leather in bag": {
+        "pool_size": 3058,
+        "products_with_term": 166,
+        "base_rate": 0.0543,
+        "tfidf_precision_at_10": 1.0,
+        "unranked_baseline_precision_at_10": 0.0
+      }
+    }
+  }
+}

@@ -1,0 +1,375 @@
+{
+  "source": {
+    "dataset": "ashraq/fashion-product-images-small",
+    "license": "MIT (declared by the Kaggle source dataset)",
+    "raw_rows": 44072
+  },
+  "final_product_count": 43165,
+  "removed": {
+    "missing_name": 0,
+    "unusable_image": 0,
+    "non_product_category": 131,
+    "non_product_type": 0,
+    "duplicate_image": 776,
+    "_total_removed": 907
+  },
+  "distribution": {
+    "domain": {
+      "apparel": 20628,
+      "accessory": 11216,
+      "footwear": 9188,
+      "beauty": 2133
+    },
+    "category_group": {
+      "topwear": 12078,
+      "bag": 3058,
+      "ethnic_wear": 2944,
+      "footwear_casual": 2843,
+      "watch": 2539,
+      "bottomwear": 2387,
+      "footwear_flat": 2375,
+      "footwear_sports": 2014,
+      "innerwear": 1782,
+      "footwear_dress": 1332,
+      "jewellery": 1076,
+      "eyewear": 1058,
+      "accessory_other": 1023,
+      "fragrance": 1004,
+      "wallet": 926,
+      "belt": 812,
+      "footwear_formal": 636,
+      "neckwear": 619,
+      "dress": 467,
+      "loungewear": 462,
+      "beauty_lip": 425,
+      "headwear": 293,
+      "beauty_nails": 284,
+      "outerwear": 270,
+      "beauty_face": 155,
+      "beauty_eye": 141,
+      "beauty_skincare": 102,
+      "apparel_set": 37,
+      "beauty_hair": 19,
+      "beauty_tools": 4
+    },
+    "colour_family": {
+      "black": 9566,
+      "blue": 6668,
+      "white": 5515,
+      "brown": 3579,
+      "grey": 3398,
+      "red": 2974,
+      "green": 2479,
+      "pink": 1910,
+      "purple": 1749,
+      "beige": 1447,
+      "silver": 1124,
+      "yellow": 835,
+      "gold": 779,
+      "orange": 751,
+      "multi": 391
+    },
+    "occasion": {
+      "casual": 33637,
+      "sports": 3976,
+      "ethnic": 3188,
+      "formal": 2243,
+      "smart_casual": 67,
+      "party": 28,
+      "travel": 26
+    },
+    "gender": {
+      "men": 22328,
+      "women": 18749,
+      "unisex": 2088
+    },
+    "age_group": {
+      "adult": 42078,
+      "kids": 1087
+    }
+  },
+  "beauty": {
+    "total": 2133,
+    "by_category_group": {
+      "fragrance": 1003,
+      "beauty_lip": 425,
+      "beauty_nails": 284,
+      "beauty_face": 155,
+      "beauty_eye": 141,
+      "beauty_skincare": 102,
+      "beauty_hair": 19,
+      "beauty_tools": 4
+    },
+    "by_product_type": {
+      "Perfume and Body Mist": 599,
+      "Deodorant": 347,
+      "Nail Polish": 278,
+      "Lipstick": 260,
+      "Lip Gloss": 109,
+      "Kajal and Eyeliner": 93,
+      "Foundation and Primer": 68,
+      "Fragrance Gift Set": 57,
+      "Face Moisturisers": 47,
+      "Lip Liner": 45,
+      "Compact": 39,
+      "Highlighter and Blush": 37,
+      "Eyeshadow": 32,
+      "Hair Colour": 19,
+      "Face Wash and Cleanser": 16,
+      "Sunscreen": 15,
+      "Mascara": 12,
+      "Concealer": 11,
+      "Mask and Peel": 10,
+      "Lip Care": 7,
+      "Nail Essentials": 6,
+      "Eye Cream": 4,
+      "Lip Plumper": 4,
+      "Face Scrub and Exfoliator": 4,
+      "Body Lotion": 3,
+      "Beauty Accessory": 3,
+      "Makeup Remover": 2,
+      "Face Serum and Gel": 2,
+      "Toner": 2,
+      "Body Wash and Scrub": 1,
+      "Mens Grooming Kit": 1
+    },
+    "women_or_unisex": 1563,
+    "colour_coverage_pct": 100.0
+  },
+  "fashion_and_accessories": {
+    "apparel": 20628,
+    "accessory": 11216,
+    "footwear": 9188
+  },
+  "colour": {
+    "base_colour_coverage_pct": 100.0,
+    "colour_family_coverage_pct": 100.0,
+    "hex_resolved_pct": 99.09,
+    "multi_unresolvable": 391,
+    "colour_meaningful_products": 36637,
+    "colour_role": {
+      "style": 36637,
+      "packaging": 6410,
+      "skin_match": 118
+    },
+    "families": [
+      "beige",
+      "black",
+      "blue",
+      "brown",
+      "gold",
+      "green",
+      "grey",
+      "multi",
+      "orange",
+      "pink",
+      "purple",
+      "red",
+      "silver",
+      "white",
+      "yellow"
+    ]
+  },
+  "images": {
+    "raw_rows_checked": 44072,
+    "raw_decoded_ok": 44072,
+    "raw_validated_ok_pct": 100.0,
+    "source_resolution": "60x80",
+    "width_distribution": {
+      "60": 43153,
+      "53": 10,
+      "54": 2
+    },
+    "height_distribution": {
+      "80": 43154,
+      "60": 5,
+      "77": 2,
+      "79": 2,
+      "76": 1,
+      "75": 1
+    },
+    "every_catalog_product_has_image": true
+  },
+  "brand": {
+    "coverage_pct": 99.59,
+    "distinct_brands": 392,
+    "top": {
+      "Nike": 2285,
+      "Puma": 2085,
+      "ADIDAS": 2074,
+      "United Colors of Benetton": 1401,
+      "Fabindia": 748,
+      "Catwalk": 741,
+      "Arrow": 696,
+      "Fastrack": 688,
+      "Wrangler": 678,
+      "Lino Perros": 652,
+      "Baggit": 620,
+      "Lee": 520,
+      "Fila": 473,
+      "Myntra": 473,
+      "French Connection": 430
+    }
+  },
+  "occasion_reliability": {
+    "reliable_rows": 41032,
+    "unreliable_rows": 2133,
+    "note": "usage is not trustworthy for beauty products (source labels virtually all personal care as Casual)"
+  },
+  "roles": {
+    "anchor_candidates": 18183,
+    "complement_candidates": 19576
+  },
+  "per_group": {
+    "topwear": {
+      "products": 12078,
+      "colours": 14,
+      "brands": 150
+    },
+    "bag": {
+      "products": 3058,
+      "colours": 15,
+      "brands": 59
+    },
+    "ethnic_wear": {
+      "products": 2944,
+      "colours": 15,
+      "brands": 46
+    },
+    "footwear_casual": {
+      "products": 2843,
+      "colours": 15,
+      "brands": 60
+    },
+    "watch": {
+      "products": 2539,
+      "colours": 15,
+      "brands": 33
+    },
+    "bottomwear": {
+      "products": 2387,
+      "colours": 13,
+      "brands": 88
+    },
+    "footwear_flat": {
+      "products": 2375,
+      "colours": 15,
+      "brands": 67
+    },
+    "footwear_sports": {
+      "products": 2014,
+      "colours": 15,
+      "brands": 30
+    },
+    "innerwear": {
+      "products": 1782,
+      "colours": 15,
+      "brands": 38
+    },
+    "footwear_dress": {
+      "products": 1332,
+      "colours": 15,
+      "brands": 19
+    },
+    "jewellery": {
+      "products": 1076,
+      "colours": 15,
+      "brands": 16
+    },
+    "eyewear": {
+      "products": 1058,
+      "colours": 14,
+      "brands": 29
+    },
+    "accessory_other": {
+      "products": 1023,
+      "colours": 15,
+      "brands": 43
+    },
+    "fragrance": {
+      "products": 1004,
+      "colours": 14,
+      "brands": 59
+    },
+    "wallet": {
+      "products": 926,
+      "colours": 15,
+      "brands": 37
+    },
+    "belt": {
+      "products": 812,
+      "colours": 15,
+      "brands": 36
+    },
+    "footwear_formal": {
+      "products": 636,
+      "colours": 5,
+      "brands": 25
+    },
+    "neckwear": {
+      "products": 619,
+      "colours": 15,
+      "brands": 23
+    },
+    "dress": {
+      "products": 467,
+      "colours": 14,
+      "brands": 30
+    },
+    "loungewear": {
+      "products": 462,
+      "colours": 15,
+      "brands": 20
+    },
+    "beauty_lip": {
+      "products": 425,
+      "colours": 12,
+      "brands": 7
+    },
+    "headwear": {
+      "products": 293,
+      "colours": 12,
+      "brands": 25
+    },
+    "beauty_nails": {
+      "products": 284,
+      "colours": 14,
+      "brands": 6
+    },
+    "outerwear": {
+      "products": 270,
+      "colours": 12,
+      "brands": 33
+    },
+    "beauty_face": {
+      "products": 155,
+      "colours": 6,
+      "brands": 6
+    },
+    "beauty_eye": {
+      "products": 141,
+      "colours": 12,
+      "brands": 10
+    },
+    "beauty_skincare": {
+      "products": 102,
+      "colours": 12,
+      "brands": 8
+    },
+    "apparel_set": {
+      "products": 37,
+      "colours": 7,
+      "brands": 8
+    },
+    "beauty_hair": {
+      "products": 19,
+      "colours": 3,
+      "brands": 1
+    },
+    "beauty_tools": {
+      "products": 4,
+      "colours": 3,
+      "brands": 3
+    }
+  }
+}

@@ -1,0 +1,255 @@
+{
+  "description": "Evaluation scenarios for the AI Beauty & Fashion Match engine. The dataset carries no user interaction labels, so there is no ground truth about which product a person would actually pick. Nothing of that kind is invented here. Instead each scenario declares the properties a correct answer must have - constraints respected, categories crossed, colours compatible, failures reported honestly - and those are checked mechanically.",
+  "protocol": [
+    "1. Expectations below were written before the evaluator was run.",
+    "2. Run scripts/evaluate_engine.py.",
+    "3. Where the engine disagreed with an expectation, inspect it and record an adjudication in `review` WITHOUT editing the original expectation.",
+    "4. Fix genuine engine defects and re-run."
+  ],
+  "metric_definitions": {
+    "constraint_satisfaction": "every returned product exists in the catalog, is flagged can_be_complement, respects excluded categories and the requested gender, and is never from the anchor's own category",
+    "colour_compatibility_rate": "of the returned products whose colour_role is 'style', the share whose harmony against the anchor colour is >= 0.60. Products whose colour is skin_match or packaging are excluded from the denominator, because colour-matching them is meaningless",
+    "category_coverage": "number of distinct complement categories represented in the returned look",
+    "cross_category_rate": "share of returned products from a different domain than the anchor - the property that makes this a complementary rather than a similarity recommender",
+    "diversity": "distinct brands and the largest share held by any one brand",
+    "candidate_coverage": "categories that produced at least one recommendation, over categories considered",
+    "explanation_completeness": "share of returned products carrying at least one reason and at least one scored component",
+    "latency_ms": "wall-clock time for one recommend() call on a warm engine"
+  },
+  "scenarios": [
+    {
+      "id": "S01",
+      "group": "success",
+      "title": "Black saree for a wedding, elegant",
+      "request": {
+        "anchor": {"anchor_type": "saree", "colour": "black"},
+        "preferences": {"occasion": "wedding", "style": "elegant", "gender": "women", "limit": 10}
+      },
+      "expect": {
+        "has_results": true,
+        "min_results": 8,
+        "must_include_any_category": ["beauty_lip", "beauty_eye", "beauty_nails"],
+        "must_include_any_category_2": ["jewellery", "bag"],
+        "must_exclude_categories": ["ethnic_wear"],
+        "min_colour_compatibility": 0.9,
+        "min_explanation_completeness": 1.0,
+        "max_brand_share": 0.5
+      },
+      "why": "The flagship case. A black anchor is neutral, so the engine should reach for metallic and saturated accents rather than more black, and should cross from apparel into both beauty and accessories."
+    },
+    {
+      "id": "S02",
+      "group": "success",
+      "title": "Pink dress for a party",
+      "request": {
+        "anchor": {"anchor_type": "dress", "colour": "pink"},
+        "preferences": {"occasion": "party", "gender": "women", "limit": 8}
+      },
+      "expect": {
+        "has_results": true,
+        "min_results": 6,
+        "must_include_any_category": ["beauty_lip", "beauty_eye", "beauty_nails"],
+        "must_exclude_categories": ["dress"],
+        "min_colour_compatibility": 0.9,
+        "must_warn_about": "party",
+        "min_explanation_completeness": 1.0
+      },
+      "why": "A saturated anchor should pull neutrals and metallics rather than more pink. The catalog holds only 28 products labelled 'party', so the engine must also disclose that it is serving the request from adjacent occasions."
+    },
+    {
+      "id": "S03",
+      "group": "success",
+      "title": "Green kurta, festive, traditional style",
+      "request": {
+        "anchor": {"anchor_type": "kurta", "colour": "green"},
+        "preferences": {"occasion": "festive", "style": "traditional", "gender": "women", "limit": 10}
+      },
+      "expect": {
+        "has_results": true,
+        "min_results": 8,
+        "must_include_any_category": ["jewellery"],
+        "must_exclude_categories": ["ethnic_wear"],
+        "min_colour_compatibility": 0.85,
+        "min_explanation_completeness": 1.0
+      },
+      "why": "A traditional brief should favour gold. Tests that the style profile actually moves the ranking rather than being decorative."
+    },
+    {
+      "id": "S04",
+      "group": "success",
+      "title": "Anchor given as a catalog product id",
+      "request": {
+        "anchor": {"product_id": "__BLACK_SAREE__"},
+        "preferences": {"occasion": "wedding", "gender": "women", "limit": 8}
+      },
+      "expect": {
+        "has_results": true,
+        "min_results": 6,
+        "anchor_source": "catalog_product",
+        "must_exclude_categories": ["ethnic_wear"],
+        "min_colour_compatibility": 0.9,
+        "min_explanation_completeness": 1.0
+      },
+      "why": "The second supported input form. Resolving a real product must give at least as much signal as describing one."
+    },
+    {
+      "id": "S05",
+      "group": "success",
+      "title": "Men's formal shirt for the office",
+      "request": {
+        "anchor": {"anchor_type": "shirt", "colour": "white"},
+        "preferences": {"occasion": "office", "gender": "men", "limit": 8}
+      },
+      "expect": {
+        "has_results": true,
+        "min_results": 5,
+        "must_include_any_category": ["watch", "belt", "footwear_formal", "wallet", "bag"],
+        "must_exclude_categories": ["topwear"],
+        "min_explanation_completeness": 1.0
+      },
+      "why": "The engine must not be a women's-ethnic special case. An office brief should surface watches, belts and formal shoes rather than makeup."
+    },
+    {
+      "id": "S06",
+      "group": "success",
+      "title": "Blue jeans, casual",
+      "request": {
+        "anchor": {"anchor_type": "jeans", "colour": "blue"},
+        "preferences": {"occasion": "casual", "gender": "women", "limit": 8}
+      },
+      "expect": {
+        "has_results": true,
+        "min_results": 5,
+        "must_exclude_categories": ["bottomwear"],
+        "min_colour_compatibility": 0.85,
+        "min_explanation_completeness": 1.0
+      },
+      "why": "Everyday case. Casual should down-weight jewellery and heavy makeup relative to the wedding scenarios."
+    },
+    {
+      "id": "F01",
+      "group": "failure",
+      "title": "Unknown anchor product id",
+      "request": {
+        "anchor": {"product_id": 999999999},
+        "preferences": {"limit": 5}
+      },
+      "expect": {
+        "has_results": false,
+        "must_warn_about": "not in the catalog"
+      },
+      "why": "An id that is not in the catalog must fail loudly and return nothing, never a silent fallback to arbitrary products."
+    },
+    {
+      "id": "F02",
+      "group": "failure",
+      "title": "Every category excluded",
+      "request": {
+        "anchor": {"anchor_type": "saree", "colour": "black"},
+        "preferences": {"exclude_categories": "__ALL__", "limit": 5}
+      },
+      "expect": {
+        "has_results": false,
+        "must_warn_about": "include/exclude"
+      },
+      "why": "An over-constrained request must return nothing with an explanation, not quietly ignore the constraint."
+    },
+    {
+      "id": "F03",
+      "group": "edge",
+      "title": "Unsupported occasion",
+      "request": {
+        "anchor": {"anchor_type": "saree", "colour": "black"},
+        "preferences": {"occasion": "moon landing", "limit": 6}
+      },
+      "expect": {
+        "has_results": true,
+        "must_warn_about": "not a recognised occasion",
+        "min_explanation_completeness": 1.0
+      },
+      "why": "An unrecognised occasion should be reported and dropped from ranking, not silently scored as mediocre. Colour and affinity can still answer."
+    },
+    {
+      "id": "F04",
+      "group": "edge",
+      "title": "Uninterpretable anchor",
+      "request": {
+        "anchor": {"anchor_type": "spacesuit", "colour": "ultraviolet"},
+        "preferences": {"limit": 6}
+      },
+      "expect": {
+        "must_warn_about": "Could not interpret"
+      },
+      "why": "Unknown vocabulary must be surfaced rather than guessed at. Whatever the engine returns, it must not pretend it understood."
+    },
+    {
+      "id": "F05",
+      "group": "edge",
+      "title": "Impossible combination - saree for the gym",
+      "request": {
+        "anchor": {"anchor_type": "saree", "colour": "black"},
+        "preferences": {"occasion": "sports", "gender": "women", "limit": 8}
+      },
+      "expect": {
+        "must_exclude_categories": ["ethnic_wear"],
+        "max_beauty_share": 0.34
+      },
+      "why": "A contradictory brief. The engine cannot refuse, but affinity should strip makeup and jewellery out of a sports request rather than dressing the user up for the gym."
+    },
+    {
+      "id": "F06",
+      "group": "edge",
+      "title": "Very rare category requested alone",
+      "request": {
+        "anchor": {"anchor_type": "saree", "colour": "black"},
+        "preferences": {"include_categories": ["headwear"], "occasion": "wedding", "gender": "women", "limit": 6}
+      },
+      "expect": {
+        "must_report_confidence_in": ["thin", "none", "moderate"]
+      },
+      "why": "Headwear is situational and sparse for this brief. The engine must say the choice is limited rather than presenting whatever it has as a strong answer."
+    },
+    {
+      "id": "F07",
+      "group": "edge",
+      "title": "Mixed colour-role category requested alone",
+      "request": {
+        "anchor": {"anchor_type": "saree", "colour": "black"},
+        "preferences": {"include_categories": ["beauty_face"], "occasion": "wedding", "gender": "women", "limit": 6}
+      },
+      "expect": {
+        "must_note_contains": "cannot be matched"
+      },
+      "why": "beauty_face is mostly foundation, whose shade matches skin rather than a saree. The engine must disclose how much of the category is not colour-matchable instead of implying 155 real options."
+    },
+    {
+      "id": "F08",
+      "group": "edge",
+      "title": "Completely generic request",
+      "request": {
+        "anchor": {},
+        "preferences": {"limit": 8}
+      },
+      "expect": {
+        "has_results": true,
+        "must_warn_about": "No anchor was given",
+        "no_colour_component": true
+      },
+      "why": "With no anchor there is no colour to coordinate with. The engine should still answer on affinity, but must not invent a colour relationship."
+    },
+    {
+      "id": "F09",
+      "group": "edge",
+      "title": "Anchor colour that resolves to Multi",
+      "request": {
+        "anchor": {"anchor_type": "saree", "colour": "multi"},
+        "preferences": {"occasion": "wedding", "gender": "women", "limit": 8}
+      },
+      "expect": {
+        "has_results": true,
+        "min_explanation_completeness": 1.0
+      },
+      "why": "A multi-coloured anchor has no single hue. The engine should fall back to a neutral 'unresolved' colour score and lean on the other signals rather than guessing a hue."
+    }
+  ]
+}

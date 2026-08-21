@@ -1,0 +1,2174 @@
+{
+  "summary": {
+    "scenarios": 15,
+    "passed": 15,
+    "failed": 0,
+    "constraint_satisfaction": 1.0,
+    "colour_compatibility_rate": 0.9091,
+    "explanation_completeness": 1.0,
+    "candidate_coverage": 0.9286,
+    "mean_category_coverage": 4.8667,
+    "mean_distinct_brands": 5.2,
+    "mean_max_brand_share": 0.2789,
+    "latency_ms": {
+      "mean": 239.79,
+      "median": 280.5,
+      "max": 394.08
+    },
+    "catalog_size": 43165
+  },
+  "protocol": [
+    "1. Expectations below were written before the evaluator was run.",
+    "2. Run scripts/evaluate_engine.py.",
+    "3. Where the engine disagreed with an expectation, inspect it and record an adjudication in `review` WITHOUT editing the original expectation.",
+    "4. Fix genuine engine defects and re-run."
+  ],
+  "metric_definitions": {
+    "constraint_satisfaction": "every returned product exists in the catalog, is flagged can_be_complement, respects excluded categories and the requested gender, and is never from the anchor's own category",
+    "colour_compatibility_rate": "of the returned products whose colour_role is 'style', the share whose harmony against the anchor colour is >= 0.60. Products whose colour is skin_match or packaging are excluded from the denominator, because colour-matching them is meaningless",
+    "category_coverage": "number of distinct complement categories represented in the returned look",
+    "cross_category_rate": "share of returned products from a different domain than the anchor - the property that makes this a complementary rather than a similarity recommender",
+    "diversity": "distinct brands and the largest share held by any one brand",
+    "candidate_coverage": "categories that produced at least one recommendation, over categories considered",
+    "explanation_completeness": "share of returned products carrying at least one reason and at least one scored component",
+    "latency_ms": "wall-clock time for one recommend() call on a warm engine"
+  },
+  "scenarios": [
+    {
+      "id": "S01",
+      "group": "success",
+      "title": "Black saree for a wedding, elegant",
+      "why": "The flagship case. A black anchor is neutral, so the engine should reach for metallic and saturated accents rather than more black, and should cross from apparel into both beauty and accessories.",
+      "metrics": {
+        "results": 10,
+        "constraint_satisfaction": 1.0,
+        "constraint_violations": [],
+        "colour_compatibility_rate": 1.0,
+        "colour_denominator": 10,
+        "colour_unresolvable": 0,
+        "category_coverage": 6,
+        "cross_category_rate": 1.0,
+        "beauty_share": 0.3,
+        "distinct_brands": 8,
+        "max_brand_share": 0.2,
+        "candidate_coverage": 1.0,
+        "explanation_completeness": 1.0,
+        "warnings": 0,
+        "latency_ms": 239.3
+      },
+      "expectation_failures": [],
+      "passed": true,
+      "top_results": [
+        {
+          "product_id": 33135,
+          "name": "Catwalk Women Bronze Heels",
+          "category_group": "footwear_dress",
+          "colour_family": "gold",
+          "score": 0.981,
+          "reasons": [
+            "Colour: gold metallic lifts a black base",
+            "Occasion: catalogued as ethnic wear, which suits a wedding (1.00)",
+            "Category: footwear is part of essentially every look (base 0.95, x1.15 for the occasion, x1.05 for this anchor) = 1.00",
+            "Preference: suits a elegant brief - elegant looks favour deep or metallic tones and matte finishes"
+          ]
+        },
+        {
+          "product_id": 30709,
+          "name": "Fabindia Red Silk Sling Purse",
+          "category_group": "bag",
+          "colour_family": "red",
+          "score": 0.9257,
+          "reasons": [
+            "Colour: red gives a black base a colour accent",
+            "Occasion: catalogued as ethnic wear, which suits a wedding (1.00)",
+            "Category: a bag is carried with most going-out looks (base 0.85, x1.05 for the occasion) = 0.89",
+            "Preference: suits a elegant brief - elegant looks favour deep or metallic tones and matte finishes"
+          ]
+        },
+        {
+          "product_id": 55488,
+          "name": "Revlon Bronze Shimmer Colorburst Lip Gloss 30",
+          "category_group": "beauty_lip",
+          "colour_family": "gold",
+          "score": 0.9554,
+          "reasons": [
+            "Colour: gold metallic lifts a black base",
+            "Occasion: gold shade with a shimmer finish reads as an evening/occasion look, which suits a wedding (0.93); derived from product attributes because the source occasion label is unreliable for beauty products",
+            "Category: lip colour is the most visible makeup decision (base 0.80, x1.20 for the occasion, x1.10 for this anchor) = 1.00",
+            "Preference: suits a elegant brief - elegant looks favour deep or metallic tones and matte finishes",
+            "Shown for variety (1 already in gold)."
+          ]
+        },
+        {
+          "product_id": 47583,
+          "name": "Portia Women Gold Flats",
+          "category_group": "footwear_flat",
+          "colour_family": "gold",
+          "score": 0.9284,
+          "reasons": [
+            "Colour: gold metallic lifts a black base",
+            "Occasion: catalogued as ethnic wear, which suits a wedding (1.00)",
+            "Preference: suits a elegant brief - elegant looks favour deep or metallic tones and matte finishes",
+            "Category: footwear is part of essentially every look (base 0.95, x0.70 for the occasion, x1.10 for this anchor) = 0.73",
+            "Shown for variety (2 already in gold)."
+          ]
+        }
+      ],
+      "warnings": [],
+      "categories": [
+        {
+          "category_group": "beauty_lip",
+          "affinity": 1.0,
+          "qualifying": 425,
+          "confidence": "strong",
+          "note": null
+        },
+        {
+          "category_group": "footwear_dress",
+          "affinity": 1.0,
+          "qualifying": 1319,
+          "confidence": "strong",
+          "note": null
+        },
+        {
+          "category_group": "jewellery",
+          "affinity": 1.0,
+          "qualifying": 1011,
+          "confidence": "strong",
+          "note": null
+        },
+        {
+          "category_group": "bag",
+          "affinity": 0.892,
+          "qualifying": 2943,
+          "confidence": "strong",
+          "note": null
+        },
+        {
+          "category_group": "beauty_eye",
+          "affinity": 0.805,
+          "qualifying": 141,
+          "confidence": "strong",
+          "note": null
+        },
+        {
+          "category_group": "footwear_flat",
+          "affinity": 0.731,
+          "qualifying": 1029,
+          "confidence": "strong",
+          "note": null
+        },
+        {
+          "category_group": "beauty_face",
+          "affinity": 0.605,
+          "qualifying": 155,
+          "confidence": "strong",
+          "note": "118 of 155 products here have a colour that cannot be matched to an outfit (skin tone or packaging); 37 can."
+        },
+        {
+          "category_group": "neckwear",
+          "affinity": 0.575,
+          "qualifying": 288,
+          "confidence": "strong",
+          "note": null
+        },
+        {
+          "category_group": "beauty_nails",
+          "affinity": 0.55,
+          "qualifying": 284,
+          "confidence": "strong",
+          "note": null
+        },
+        {
+          "category_group": "fragrance",
+          "affinity": 0.495,
+          "qualifying": 435,
+          "confidence": "strong",
+          "note": null
+        },
+        {
+          "category_group": "watch",
+          "affinity": 0.158,
+          "qualifying": 928,
+          "confidence": "strong",
+          "note": null
+        }
+      ]
+    },
+    {
+      "id": "S02",
+      "group": "success",
+      "title": "Pink dress for a party",
+      "why": "A saturated anchor should pull neutrals and metallics rather than more pink. The catalog holds only 28 products labelled 'party', so the engine must also disclose that it is serving the request from adjacent occasions.",
+      "metrics": {
+        "results": 8,
+        "constraint_satisfaction": 1.0,
+        "constraint_violations": [],
+        "colour_compatibility_rate": 1.0,
+        "colour_denominator": 7,
+        "colour_unresolvable": 0,
+        "category_coverage": 6,
+        "cross_category_rate": 1.0,
+        "beauty_share": 0.375,
+        "distinct_brands": 8,
+        "max_brand_share": 0.125,
+        "candidate_coverage": 0.9231,
+        "explanation_completeness": 1.0,
+        "warnings": 2,
+        "latency_ms": 336.69
+      },
+      "expectation_failures": [],
+      "passed": true,
+      "top_results": [
+        {
+          "product_id": 32685,
+          "name": "Rocia Women Gold Coloured Clutch",
+          "category_group": "bag",
+          "colour_family": "gold",
+          "score": 0.9641,
+          "reasons": [
+            "Colour: gold suits the warm tone of pink",
+            "Occasion: catalogued as party wear, which suits a party (1.00)",
+            "Category: a bag is carried with most going-out looks (base 0.85, x1.10 for the occasion, x1.10 for this anchor) = 1.00"
+          ]
+        },
+        {
+          "product_id": 45340,
+          "name": "Cobblerz Women Silver-Toned Sandals",
+          "category_group": "footwear_dress",
+          "colour_family": "silver",
+          "score": 0.9013,
+          "reasons": [
+            "Colour: silver runs cool against a warm pink",
+            "Occasion: catalogued as party wear, which suits a party (1.00)",
+            "Category: footwear is part of essentially every look (base 0.95, x1.20 for the occasion, x1.15 for this anchor) = 1.00"
+          ]
+        },
+        {
+          "product_id": 55488,
+          "name": "Revlon Bronze Shimmer Colorburst Lip Gloss 30",
+          "category_group": "beauty_lip",
+          "colour_family": "gold",
+          "score": 0.9593,
+          "reasons": [
+            "Colour: gold suits the warm tone of pink",
+            "Occasion: gold shade with a shimmer finish reads as an evening/occasion look, which suits a party (0.98); derived from product attributes because the source occasion label is unreliable for beauty products",
+            "Category: lip colour is the most visible makeup decision (base 0.80, x1.20 for the occasion, x1.05 for this anchor) = 1.00",
+            "Shown for variety (1 already in gold)."
+          ]
+        },
+        {
+          "product_id": 30696,
+          "name": "Fabindia Black & Gold Conical Purse",
+          "category_group": "bag",
+          "colour_family": "black",
+          "score": 0.8429,
+          "reasons": [
+            "Colour: black grounds a saturated pink look",
+            "Occasion: catalogued as ethnic wear, which suits a party (0.72)",
+            "Category: a bag is carried with most going-out looks (base 0.85, x1.10 for the occasion, x1.10 for this anchor) = 1.00",
+            "Shown for variety (1 already of type Clutches)."
+          ]
+        }
+      ],
+      "warnings": [
+        "The catalog holds only 28 products labelled 'party', so party requests are served from ethnic, formal and smart-casual items rather than by filtering on the label.",
+        "Nothing suitable found in: footwear_formal. These were left out rather than filled with a poor match."
+      ],
+      "categories": [
+        {
+          "category_group": "bag",
+          "affinity": 1.0,
+          "qualifying": 2924,
+          "confidence": "strong",
+          "note": null
+        },
+        {
+          "category_group": "beauty_lip",
+          "affinity": 1.0,
+          "qualifying": 425,
+          "confidence": "strong",
+          "note": null
+        },
+        {
+          "category_group": "footwear_dress",
+          "affinity": 1.0,
+          "qualifying": 1319,
+          "confidence": "strong",
+          "note": null
+        },
+        {
+          "category_group": "jewellery",
+          "affinity": 0.968,
+          "qualifying": 1011,
+          "confidence": "strong",
+          "note": null
+        },
+        {
+          "category_group": "footwear_flat",
+          "affinity": 0.95,
+          "qualifying": 1029,
+          "confidence": "strong",
+          "note": null
+        },
+        {
+          "category_group": "beauty_eye",
+          "affinity": 0.84,
+          "qualifying": 141,
+          "confidence": "strong",
+          "note": null
+        },
+        {
+          "category_group": "beauty_nails",
+          "affinity": 0.575,
+          "qualifying": 284,
+          "confidence": "strong",
+          "note": null
+        },
+        {
+          "category_group": "beauty_face",
+          "affinity": 0.55,
+          "qualifying": 155,
+          "confidence": "strong",
+          "note": "118 of 155 products here have a colour that cannot be matched to an outfit (skin tone or packaging); 37 can."
+        },
+        {
+          "category_group": "footwear_formal",
+          "affinity": 0.522,
+          "qualifying": 0,
+          "confidence": "none",
+          "note": "No products in this category match the requested audience."
+        },
+        {
+          "category_group": "fragrance",
+          "affinity": 0.495,
+          "qualifying": 435,
+          "confidence": "strong",
+          "note": null
+        },
+        {
+          "category_group": "neckwear",
+          "affinity": 0.35,
+          "qualifying": 287,
+          "confidence": "strong",
+          "note": null
+        },
+        {
+          "category_group": "watch",
+          "affinity": 0.27,
+          "qualifying": 1039,
+          "confidence": "strong",
+          "note": null
+        },
+        {
+          "category_group": "footwear_casual",
+          "affinity": 0.228,
+          "qualifying": 560,
+          "confidence": "strong",
+          "note": null
+        }
+      ]
+    },
+    {
+      "id": "S03",
+      "group": "success",
+      "title": "Green kurta, festive, traditional style",
+      "why": "A traditional brief should favour gold. Tests that the style profile actually moves the ranking rather than being decorative.",
+      "metrics": {
+        "results": 10,
+        "constraint_satisfaction": 1.0,
+        "constraint_violations": [],
+        "colour_compatibility_rate": 1.0,
+        "colour_denominator": 10,
+        "colour_unresolvable": 0,
+        "category_coverage": 7,
+        "cross_category_rate": 1.0,
+        "beauty_share": 0.3,
+        "distinct_brands": 9,
+        "max_brand_share": 0.2,
+        "candidate_coverage": 1.0,
+        "explanation_completeness": 1.0,
+        "warnings": 0,
+        "latency_ms": 275.23
+      },
+      "expectation_failures": [],
+      "passed": true,
+      "top_results": [
+        {
+          "product_id": 57007,
+          "name": "HM Women Silver Sandals",
+          "category_group": "footwear_flat",
+          "colour_family": "silver",
+          "score": 0.9346,
+          "reasons": [
+            "Colour: silver suits the cool tone of green",
+            "Occasion: catalogued as ethnic wear, which suits a festive (1.00)",
+            "Category: footwear is part of essentially every look (base 0.95, x1.10 for this anchor) = 1.00",
+            "Preference: suits a traditional brief - traditional looks centre on gold and rich festive colour"
+          ]
+        },
+        {
+          "product_id": 55488,
+          "name": "Revlon Bronze Shimmer Colorburst Lip Gloss 30",
+          "category_group": "beauty_lip",
+          "colour_family": "gold",
+          "score": 0.9163,
+          "reasons": [
+            "Colour: gold runs warm against a cool green",
+            "Occasion: gold shade with a shimmer finish reads as an evening/occasion look, which suits a festive (1.00); derived from product attributes because the source occasion label is unreliable for beauty products",
+            "Category: lip colour is the most visible makeup decision (base 0.80, x1.15 for the occasion, x1.10 for this anchor) = 1.00",
+            "Preference: suits a traditional brief - traditional looks centre on gold and rich festive colour"
+          ]
+        },
+        {
+          "product_id": 30696,
+          "name": "Fabindia Black & Gold Conical Purse",
+          "category_group": "bag",
+          "colour_family": "black",
+          "score": 0.8451,
+          "reasons": [
+            "Colour: black grounds a saturated green look",
+            "Occasion: catalogued as ethnic wear, which suits a festive (1.00)",
+            "Category: a bag is carried with most going-out looks (base 0.85) = 0.85",
+            "Preference: suits a traditional brief - traditional looks centre on gold and rich festive colour"
+          ]
+        },
+        {
+          "product_id": 33135,
+          "name": "Catwalk Women Bronze Heels",
+          "category_group": "footwear_dress",
+          "colour_family": "gold",
+          "score": 0.9163,
+          "reasons": [
+            "Colour: gold runs warm against a cool green",
+            "Occasion: catalogued as ethnic wear, which suits a festive (1.00)",
+            "Category: footwear is part of essentially every look (base 0.95, x1.10 for the occasion, x1.05 for this anchor) = 1.00",
+            "Preference: suits a traditional brief - traditional looks centre on gold and rich festive colour",
+            "Shown for variety (1 already in gold)."
+          ]
+        }
+      ],
+      "warnings": [],
+      "categories": [
+        {
+          "category_group": "beauty_lip",
+          "affinity": 1.0,
+          "qualifying": 425,
+          "confidence": "strong",
+          "note": null
+        },
+        {
+          "category_group": "footwear_dress",
+          "affinity": 1.0,
+          "qualifying": 1319,
+          "confidence": "strong",
+          "note": null
+        },
+        {
+          "category_group": "footwear_flat",
+          "affinity": 1.0,
+          "qualifying": 1029,
+          "confidence": "strong",
+          "note": null
+        },
+        {
+          "category_group": "jewellery",
+          "affinity": 1.0,
+          "qualifying": 1011,
+          "confidence": "strong",
+          "note": null
+        },
+        {
+          "category_group": "bag",
+          "affinity": 0.85,
+          "qualifying": 2923,
+          "confidence": "strong",
+          "note": null
+        },
+        {
+          "category_group": "beauty_eye",
+          "affinity": 0.77,
+          "qualifying": 141,
+          "confidence": "strong",
+          "note": null
+        },
+        {
+          "category_group": "neckwear",
+          "affinity": 0.632,
+          "qualifying": 288,
+          "confidence": "strong",
+          "note": null
+        },
+        {
+          "category_group": "beauty_face",
+          "affinity": 0.55,
+          "qualifying": 155,
+          "confidence": "strong",
+          "note": "118 of 155 products here have a colour that cannot be matched to an outfit (skin tone or packaging); 37 can."
+        },
+        {
+          "category_group": "beauty_nails",
+          "affinity": 0.55,
+          "qualifying": 284,
+          "confidence": "strong",
+          "note": null
+        },
+        {
+          "category_group": "fragrance",
+          "affinity": 0.45,
+          "qualifying": 435,
+          "confidence": "strong",
+          "note": null
+        },
+        {
+          "category_group": "headwear",
+          "affinity": 0.2,
+          "qualifying": 133,
+          "confidence": "moderate",
+          "note": null
+        },
+        {
+          "category_group": "footwear_casual",
+          "affinity": 0.19,
+          "qualifying": 558,
+          "confidence": "strong",
+          "note": null
+        },
+        {
+          "category_group": "watch",
+          "affinity": 0.189,
+          "qualifying": 1035,
+          "confidence": "strong",
+          "note": null
+        }
+      ]
+    },
+    {
+      "id": "S04",
+      "group": "success",
+      "title": "Anchor given as a catalog product id",
+      "why": "The second supported input form. Resolving a real product must give at least as much signal as describing one.",
+      "metrics": {
+        "results": 8,
+        "constraint_satisfaction": 1.0,
+        "constraint_violations": [],
+        "colour_compatibility_rate": 1.0,
+        "colour_denominator": 7,
+        "colour_unresolvable": 0,
+        "category_coverage": 7,
+        "cross_category_rate": 1.0,
+        "beauty_share": 0.25,
+        "distinct_brands": 6,
+        "max_brand_share": 0.25,
+        "candidate_coverage": 1.0,
+        "explanation_completeness": 1.0,
+        "warnings": 0,
+        "latency_ms": 280.5
+      },
+      "expectation_failures": [],
+      "passed": true,
+      "top_results": [
+        {
+          "product_id": 33135,
+          "name": "Catwalk Women Bronze Heels",
+          "category_group": "footwear_dress",
+          "colour_family": "gold",
+          "score": 0.9776,
+          "reasons": [
+            "Colour: gold metallic lifts a black base",
+            "Occasion: catalogued as ethnic wear, which suits a wedding (1.00)",
+            "Category: footwear is part of essentially every look (base 0.95, x1.15 for the occasion, x1.05 for this anchor) = 1.00"
+          ]
+        },
+        {
+          "product_id": 31700,
+          "name": "Fabindia Women Ananya Silver Earrings",
+          "category_group": "jewellery",
+          "colour_family": "silver",
+          "score": 0.9776,
+          "reasons": [
+            "Colour: silver metallic lifts a black base",
+            "Occasion: catalogued as ethnic wear, which suits a wedding (1.00)",
+            "Category: jewellery is the primary way a look is dressed up (base 0.80, x1.20 for the occasion, x1.20 for this anchor) = 1.00"
+          ]
+        },
+        {
+          "product_id": 55488,
+          "name": "Revlon Bronze Shimmer Colorburst Lip Gloss 30",
+          "category_group": "beauty_lip",
+          "colour_family": "gold",
+          "score": 0.9535,
+          "reasons": [
+            "Colour: gold metallic lifts a black base",
+            "Occasion: gold shade with a shimmer finish reads as an evening/occasion look, which suits a wedding (0.93); derived from product attributes because the source occasion label is unreliable for beauty products",
+            "Category: lip colour is the most visible makeup decision (base 0.80, x1.20 for the occasion, x1.10 for this anchor) = 1.00",
+            "Shown for variety (1 already in gold)."
+          ]
+        },
+        {
+          "product_id": 30709,
+          "name": "Fabindia Red Silk Sling Purse",
+          "category_group": "bag",
+          "colour_family": "red",
+          "score": 0.9303,
+          "reasons": [
+            "Colour: red gives a black base a colour accent",
+            "Occasion: catalogued as ethnic wear, which suits a wedding (1.00)",
+            "Category: a bag is carried with most going-out looks (base 0.85, x1.05 for the occasion) = 0.89",
+            "Shown for variety (1 already from Fabindia)."
+          ]
+        }
+      ],
+      "warnings": [],
+      "categories": [
+        {
+          "category_group": "beauty_lip",
+          "affinity": 1.0,
+          "qualifying": 425,
+          "confidence": "strong",
+          "note": null
+        },
+        {
+          "category_group": "footwear_dress",
+          "affinity": 1.0,
+          "qualifying": 1319,
+          "confidence": "strong",
+          "note": null
+        },
+        {
+          "category_group": "jewellery",
+          "affinity": 1.0,
+          "qualifying": 1011,
+          "confidence": "strong",
+          "note": null
+        },
+        {
+          "category_group": "bag",
+          "affinity": 0.892,
+          "qualifying": 2504,
+          "confidence": "strong",
+          "note": null
+        },
+        {
+          "category_group": "beauty_eye",
+          "affinity": 0.805,
+          "qualifying": 141,
+          "confidence": "strong",
+          "note": null
+        },
+        {
+          "category_group": "footwear_flat",
+          "affinity": 0.731,
+          "qualifying": 1029,
+          "confidence": "strong",
+          "note": null
+        },
+        {
+          "category_group": "beauty_face",
+          "affinity": 0.605,
+          "qualifying": 155,
+          "confidence": "strong",
+          "note": "118 of 155 products here have a colour that cannot be matched to an outfit (skin tone or packaging); 37 can."
+        },
+        {
+          "category_group": "neckwear",
+          "affinity": 0.575,
+          "qualifying": 288,
+          "confidence": "strong",
+          "note": null
+        },
+        {
+          "category_group": "beauty_nails",
+          "affinity": 0.55,
+          "qualifying": 284,
+          "confidence": "strong",
+          "note": null
+        },
+        {
+          "category_group": "fragrance",
+          "affinity": 0.495,
+          "qualifying": 435,
+          "confidence": "strong",
+          "note": null
+        },
+        {
+          "category_group": "watch",
+          "affinity": 0.158,
+          "qualifying": 388,
+          "confidence": "strong",
+          "note": null
+        }
+      ]
+    },
+    {
+      "id": "S05",
+      "group": "success",
+      "title": "Men's formal shirt for the office",
+      "why": "The engine must not be a women's-ethnic special case. An office brief should surface watches, belts and formal shoes rather than makeup.",
+      "metrics": {
+        "results": 8,
+        "constraint_satisfaction": 1.0,
+        "constraint_violations": [],
+        "colour_compatibility_rate": 1.0,
+        "colour_denominator": 7,
+        "colour_unresolvable": 0,
+        "category_coverage": 8,
+        "cross_category_rate": 1.0,
+        "beauty_share": 0.0,
+        "distinct_brands": 8,
+        "max_brand_share": 0.125,
+        "candidate_coverage": 0.75,
+        "explanation_completeness": 1.0,
+        "warnings": 2,
+        "latency_ms": 386.82
+      },
+      "expectation_failures": [],
+      "passed": true,
+      "top_results": [
+        {
+          "product_id": 2367,
+          "name": "Red Tape Men's Brown Semi Formal Shoe",
+          "category_group": "footwear_formal",
+          "colour_family": "brown",
+          "score": 0.9551,
+          "reasons": [
+            "Colour: brown gives a white base a colour accent",
+            "Occasion: catalogued as formal wear, which suits a office (1.00)",
+            "Category: footwear is part of essentially every look (base 0.95, x1.20 for the occasion) = 1.00"
+          ]
+        },
+        {
+          "product_id": 10583,
+          "name": "Esprit Men Nova Genesis Brown Gold Watches",
+          "category_group": "watch",
+          "colour_family": "gold",
+          "score": 0.8776,
+          "reasons": [
+            "Colour: gold metallic lifts a white base",
+            "Occasion: catalogued as formal wear, which suits a office (1.00)",
+            "Category: a watch is habitual rather than look-driven (base 0.45, x1.20 for the occasion, x1.05 for this anchor) = 0.57"
+          ]
+        },
+        {
+          "product_id": 31329,
+          "name": "Franco Leone Men Slip On Navy Blue Shoes",
+          "category_group": "footwear_casual",
+          "colour_family": "blue",
+          "score": 0.8691,
+          "reasons": [
+            "Colour: blue gives a white base a colour accent",
+            "Occasion: catalogued as formal wear, which suits a office (1.00)",
+            "Category: footwear is part of essentially every look (base 0.95, x0.60 for the occasion, x1.10 for this anchor) = 0.63"
+          ]
+        },
+        {
+          "product_id": 2821,
+          "name": "Lee Cooper Men Formal Leather Brown Sandal",
+          "category_group": "footwear_flat",
+          "colour_family": "brown",
+          "score": 0.9436,
+          "reasons": [
+            "Colour: brown gives a white base a colour accent",
+            "Occasion: catalogued as formal wear, which suits a office (1.00)",
+            "Category: footwear is part of essentially every look (base 0.95) = 0.95",
+            "Shown for variety (1 already in brown)."
+          ]
+        }
+      ],
+      "warnings": [
+        "Limited choice in: footwear_dress.",
+        "Nothing suitable found in: beauty_eye, beauty_face, beauty_lip, beauty_nails. These were left out rather than filled with a poor match."
+      ],
+      "categories": [
+        {
+          "category_group": "footwear_formal",
+          "affinity": 1.0,
+          "qualifying": 636,
+          "confidence": "strong",
+          "note": null
+        },
+        {
+          "category_group": "footwear_dress",
+          "affinity": 0.95,
+          "qualifying": 1,
+          "confidence": "thin",
+          "note": "Only 1 products in this category are a good match, so the selection is limited."
+        },
+        {
+          "category_group": "footwear_flat",
+          "affinity": 0.95,
+          "qualifying": 1521,
+          "confidence": "strong",
+          "note": null
+        },
+        {
+          "category_group": "bag",
+          "affinity": 0.888,
+          "qualifying": 938,
+          "confidence": "strong",
+          "note": null
+        },
+        {
+          "category_group": "beauty_lip",
+          "affinity": 0.72,
+          "qualifying": 0,
+          "confidence": "none",
+          "note": "No products in this category match the requested audience."
+        },
+        {
+          "category_group": "footwear_casual",
+          "affinity": 0.627,
+          "qualifying": 2472,
+          "confidence": "strong",
+          "note": null
+        },
+        {
+          "category_group": "jewellery",
+          "affinity": 0.576,
+          "qualifying": 64,
+          "confidence": "moderate",
+          "note": null
+        },
+        {
+          "category_group": "watch",
+          "affinity": 0.567,
+          "qualifying": 1573,
+          "confidence": "strong",
+          "note": null
+        },
+        {
+          "category_group": "beauty_eye",
+          "affinity": 0.56,
+          "qualifying": 0,
+          "confidence": "none",
+          "note": "No products in this category match the requested audience."
+        },
+        {
+          "category_group": "beauty_face",
+          "affinity": 0.55,
+          "qualifying": 0,
+          "confidence": "none",
+          "note": "No products in this category match the requested audience."
+        },
+        {
+          "category_group": "fragrance",
+          "affinity": 0.45,
+          "qualifying": 581,
+          "confidence": "strong",
+          "note": null
+        },
+        {
+          "category_group": "neckwear",
+          "affinity": 0.425,
+          "qualifying": 337,
+          "confidence": "strong",
+          "note": null
+        },
+        {
+          "category_group": "eyewear",
+          "affinity": 0.367,
+          "qualifying": 727,
+          "confidence": "strong",
+          "note": null
+        },
+        {
+          "category_group": "beauty_nails",
+          "affinity": 0.35,
+          "qualifying": 0,
+          "confidence": "none",
+          "note": "No products in this category match the requested audience."
+        },
+        {
+          "category_group": "belt",
+          "affinity": 0.33,
+          "qualifying": 550,
+          "confidence": "strong",
+          "note": null
+        },
+        {
+          "category_group": "wallet",
+          "affinity": 0.15,
+          "qualifying": 460,
+          "confidence": "strong",
+          "note": null
+        }
+      ]
+    },
+    {
+      "id": "S06",
+      "group": "success",
+      "title": "Blue jeans, casual",
+      "why": "Everyday case. Casual should down-weight jewellery and heavy makeup relative to the wedding scenarios.",
+      "metrics": {
+        "results": 8,
+        "constraint_satisfaction": 1.0,
+        "constraint_violations": [],
+        "colour_compatibility_rate": 1.0,
+        "colour_denominator": 8,
+        "colour_unresolvable": 0,
+        "category_coverage": 8,
+        "cross_category_rate": 1.0,
+        "beauty_share": 0.375,
+        "distinct_brands": 7,
+        "max_brand_share": 0.25,
+        "candidate_coverage": 0.9412,
+        "explanation_completeness": 1.0,
+        "warnings": 1,
+        "latency_ms": 368.88
+      },
+      "expectation_failures": [],
+      "passed": true,
+      "top_results": [
+        {
+          "product_id": 4136,
+          "name": "Skechers Women Silver White Blue Shoe",
+          "category_group": "footwear_casual",
+          "colour_family": "silver",
+          "score": 0.9641,
+          "reasons": [
+            "Colour: silver suits the cool tone of blue",
+            "Occasion: catalogued as casual wear, which suits a casual (1.00)",
+            "Category: footwear is part of essentially every look (base 0.95, x1.25 for the occasion, x1.10 for this anchor) = 1.00"
+          ]
+        },
+        {
+          "product_id": 56085,
+          "name": "Colorbar Pearliser Star Shine Lip Gloss 08",
+          "category_group": "beauty_lip",
+          "colour_family": "white",
+          "score": 0.8805,
+          "reasons": [
+            "Colour: white grounds a saturated blue look",
+            "Occasion: white shade with a gloss finish reads as a soft daytime look, which suits a casual (0.98); derived from product attributes because the source occasion label is unreliable for beauty products",
+            "Category: lip colour is the most visible makeup decision (base 0.80) = 0.80"
+          ]
+        },
+        {
+          "product_id": 2609,
+          "name": "Carlton London Women Contemporary Silver Sandal",
+          "category_group": "footwear_flat",
+          "colour_family": "silver",
+          "score": 0.9641,
+          "reasons": [
+            "Colour: silver suits the cool tone of blue",
+            "Occasion: catalogued as casual wear, which suits a casual (1.00)",
+            "Category: footwear is part of essentially every look (base 0.95, x1.10 for the occasion) = 1.00",
+            "Shown for variety (1 already in silver)."
+          ]
+        },
+        {
+          "product_id": 56580,
+          "name": "Streetwear Crystal Shine Ivory Face Brightener Loose Powder",
+          "category_group": "beauty_face",
+          "colour_family": "beige",
+          "score": 0.8181,
+          "reasons": [
+            "Colour: beige grounds a saturated blue look",
+            "Occasion: beige shade with a gloss finish reads as a soft daytime look, which suits a casual (0.97); derived from product attributes because the source occasion label is unreliable for beauty products",
+            "Category: base makeup matters but is chosen by skin, not outfit (base 0.55) = 0.55"
+          ]
+        }
+      ],
+      "warnings": [
+        "Nothing suitable found in: footwear_formal. These were left out rather than filled with a poor match."
+      ],
+      "categories": [
+        {
+          "category_group": "footwear_casual",
+          "affinity": 1.0,
+          "qualifying": 560,
+          "confidence": "strong",
+          "note": null
+        },
+        {
+          "category_group": "footwear_flat",
+          "affinity": 1.0,
+          "qualifying": 1029,
+          "confidence": "strong",
+          "note": null
+        },
+        {
+          "category_group": "footwear_formal",
+          "affinity": 0.997,
+          "qualifying": 0,
+          "confidence": "none",
+          "note": "No products in this category match the requested audience."
+        },
+        {
+          "category_group": "bag",
+          "affinity": 0.85,
+          "qualifying": 2963,
+          "confidence": "strong",
+          "note": null
+        },
+        {
+          "category_group": "beauty_lip",
+          "affinity": 0.8,
+          "qualifying": 425,
+          "confidence": "strong",
+          "note": null
+        },
+        {
+          "category_group": "beauty_face",
+          "affinity": 0.55,
+          "qualifying": 155,
+          "confidence": "strong",
+          "note": "118 of 155 products here have a colour that cannot be matched to an outfit (skin tone or packaging); 37 can."
+        },
+        {
+          "category_group": "beauty_eye",
+          "affinity": 0.525,
+          "qualifying": 141,
+          "confidence": "strong",
+          "note": null
+        },
+        {
+          "category_group": "footwear_dress",
+          "affinity": 0.522,
+          "qualifying": 1319,
+          "confidence": "strong",
+          "note": null
+        },
+        {
+          "category_group": "watch",
+          "affinity": 0.495,
+          "qualifying": 1043,
+          "confidence": "strong",
+          "note": null
+        },
+        {
+          "category_group": "jewellery",
+          "affinity": 0.448,
+          "qualifying": 1011,
+          "confidence": "strong",
+          "note": null
+        },
+        {
+          "category_group": "eyewear",
+          "affinity": 0.402,
+          "qualifying": 469,
+          "confidence": "strong",
+          "note": null
+        },
+        {
+          "category_group": "beauty_nails",
+          "affinity": 0.4,
+          "qualifying": 284,
+          "confidence": "strong",
+          "note": null
+        },
+        {
+          "category_group": "belt",
+          "affinity": 0.39,
+          "qualifying": 271,
+          "confidence": "strong",
+          "note": null
+        },
+        {
+          "category_group": "fragrance",
+          "affinity": 0.383,
+          "qualifying": 435,
+          "confidence": "strong",
+          "note": null
+        },
+        {
+          "category_group": "neckwear",
+          "affinity": 0.3,
+          "qualifying": 285,
+          "confidence": "strong",
+          "note": null
+        },
+        {
+          "category_group": "headwear",
+          "affinity": 0.2,
+          "qualifying": 179,
+          "confidence": "strong",
+          "note": null
+        },
+        {
+          "category_group": "wallet",
+          "affinity": 0.15,
+          "qualifying": 486,
+          "confidence": "strong",
+          "note": null
+        }
+      ]
+    },
+    {
+      "id": "F01",
+      "group": "failure",
+      "title": "Unknown anchor product id",
+      "why": "An id that is not in the catalog must fail loudly and return nothing, never a silent fallback to arbitrary products.",
+      "metrics": {
+        "results": 0,
+        "constraint_satisfaction": 1.0,
+        "constraint_violations": [],
+        "colour_compatibility_rate": null,
+        "colour_denominator": 0,
+        "colour_unresolvable": 0,
+        "category_coverage": 0,
+        "cross_category_rate": null,
+        "beauty_share": 0.0,
+        "distinct_brands": 0,
+        "max_brand_share": 0.0,
+        "candidate_coverage": null,
+        "explanation_completeness": null,
+        "warnings": 1,
+        "latency_ms": 0.3
+      },
+      "expectation_failures": [],
+      "passed": true,
+      "top_results": [],
+      "warnings": [
+        "product_id 999999999 is not in the catalog. No recommendations can be made without a valid anchor."
+      ],
+      "categories": []
+    },
+    {
+      "id": "F02",
+      "group": "failure",
+      "title": "Every category excluded",
+      "why": "An over-constrained request must return nothing with an explanation, not quietly ignore the constraint.",
+      "metrics": {
+        "results": 0,
+        "constraint_satisfaction": 1.0,
+        "constraint_violations": [],
+        "colour_compatibility_rate": null,
+        "colour_denominator": 0,
+        "colour_unresolvable": 0,
+        "category_coverage": 0,
+        "cross_category_rate": null,
+        "beauty_share": 0.0,
+        "distinct_brands": 0,
+        "max_brand_share": 0.0,
+        "candidate_coverage": null,
+        "explanation_completeness": null,
+        "warnings": 1,
+        "latency_ms": 0.05
+      },
+      "expectation_failures": [],
+      "passed": true,
+      "top_results": [],
+      "warnings": [
+        "No complementary category remained after applying the include/exclude filters."
+      ],
+      "categories": []
+    },
+    {
+      "id": "F03",
+      "group": "edge",
+      "title": "Unsupported occasion",
+      "why": "An unrecognised occasion should be reported and dropped from ranking, not silently scored as mediocre. Colour and affinity can still answer.",
+      "metrics": {
+        "results": 6,
+        "constraint_satisfaction": 1.0,
+        "constraint_violations": [],
+        "colour_compatibility_rate": 1.0,
+        "colour_denominator": 6,
+        "colour_unresolvable": 0,
+        "category_coverage": 5,
+        "cross_category_rate": 1.0,
+        "beauty_share": 0.3333,
+        "distinct_brands": 6,
+        "max_brand_share": 0.1667,
+        "candidate_coverage": 1.0,
+        "explanation_completeness": 1.0,
+        "warnings": 1,
+        "latency_ms": 379.13
+      },
+      "expectation_failures": [],
+      "passed": true,
+      "top_results": [
+        {
+          "product_id": 2609,
+          "name": "Carlton London Women Contemporary Silver Sandal",
+          "category_group": "footwear_flat",
+          "colour_family": "silver",
+          "score": 0.967,
+          "reasons": [
+            "Colour: silver metallic lifts a black base",
+            "Category: footwear is part of essentially every look (base 0.95, x1.10 for this anchor) = 1.00"
+          ]
+        },
+        {
+          "product_id": 49103,
+          "name": "Deborah Chocolate Volume Lip Plumper 05",
+          "category_group": "beauty_lip",
+          "colour_family": "gold",
+          "score": 0.9262,
+          "reasons": [
+            "Colour: gold metallic lifts a black base",
+            "Category: lip colour is the most visible makeup decision (base 0.80, x1.10 for this anchor) = 0.88"
+          ]
+        },
+        {
+          "product_id": 2897,
+          "name": "Catwalk Women Golden Heels",
+          "category_group": "footwear_dress",
+          "colour_family": "silver",
+          "score": 0.9661,
+          "reasons": [
+            "Colour: silver metallic lifts a black base",
+            "Category: footwear is part of essentially every look (base 0.95, x1.05 for this anchor) = 1.00",
+            "Shown for variety (1 already in silver)."
+          ]
+        },
+        {
+          "product_id": 55469,
+          "name": "Revlon Super Lusterous Frost Bronze Lipstick 310",
+          "category_group": "beauty_lip",
+          "colour_family": "gold",
+          "score": 0.9262,
+          "reasons": [
+            "Colour: gold metallic lifts a black base",
+            "Category: lip colour is the most visible makeup decision (base 0.80, x1.10 for this anchor) = 0.88",
+            "Shown for variety (1 already in gold)."
+          ]
+        }
+      ],
+      "warnings": [
+        "'moon landing' is not a recognised occasion (wedding, festive, party, formal, office, casual, sports); occasion was not used to rank."
+      ],
+      "categories": [
+        {
+          "category_group": "footwear_flat",
+          "affinity": 1.0,
+          "qualifying": 2302,
+          "confidence": "strong",
+          "note": null
+        },
+        {
+          "category_group": "footwear_dress",
+          "affinity": 0.997,
+          "qualifying": 1320,
+          "confidence": "strong",
+          "note": null
+        },
+        {
+          "category_group": "jewellery",
+          "affinity": 0.96,
+          "qualifying": 1075,
+          "confidence": "strong",
+          "note": null
+        },
+        {
+          "category_group": "beauty_lip",
+          "affinity": 0.88,
+          "qualifying": 425,
+          "confidence": "strong",
+          "note": null
+        },
+        {
+          "category_group": "bag",
+          "affinity": 0.85,
+          "qualifying": 3054,
+          "confidence": "strong",
+          "note": null
+        },
+        {
+          "category_group": "beauty_eye",
+          "affinity": 0.7,
+          "qualifying": 141,
+          "confidence": "strong",
+          "note": null
+        },
+        {
+          "category_group": "neckwear",
+          "affinity": 0.575,
+          "qualifying": 619,
+          "confidence": "strong",
+          "note": null
+        },
+        {
+          "category_group": "beauty_face",
+          "affinity": 0.55,
+          "qualifying": 37,
+          "confidence": "strong",
+          "note": null
+        },
+        {
+          "category_group": "beauty_nails",
+          "affinity": 0.5,
+          "qualifying": 284,
+          "confidence": "strong",
+          "note": null
+        },
+        {
+          "category_group": "fragrance",
+          "affinity": 0.45,
+          "qualifying": 600,
+          "confidence": "moderate",
+          "note": null
+        },
+        {
+          "category_group": "footwear_casual",
+          "affinity": 0.38,
+          "qualifying": 2805,
+          "confidence": "strong",
+          "note": null
+        },
+        {
+          "category_group": "watch",
+          "affinity": 0.315,
+          "qualifying": 2514,
+          "confidence": "strong",
+          "note": null
+        },
+        {
+          "category_group": "footwear_formal",
+          "affinity": 0.285,
+          "qualifying": 636,
+          "confidence": "strong",
+          "note": null
+        },
+        {
+          "category_group": "eyewear",
+          "affinity": 0.21,
+          "qualifying": 1055,
+          "confidence": "strong",
+          "note": null
+        },
+        {
+          "category_group": "headwear",
+          "affinity": 0.2,
+          "qualifying": 292,
+          "confidence": "strong",
+          "note": null
+        },
+        {
+          "category_group": "wallet",
+          "affinity": 0.15,
+          "qualifying": 922,
+          "confidence": "strong",
+          "note": null
+        }
+      ]
+    },
+    {
+      "id": "F04",
+      "group": "edge",
+      "title": "Uninterpretable anchor",
+      "why": "Unknown vocabulary must be surfaced rather than guessed at. Whatever the engine returns, it must not pretend it understood.",
+      "metrics": {
+        "results": 6,
+        "constraint_satisfaction": 1.0,
+        "constraint_violations": [],
+        "colour_compatibility_rate": null,
+        "colour_denominator": 0,
+        "colour_unresolvable": 0,
+        "category_coverage": 6,
+        "cross_category_rate": 1.0,
+        "beauty_share": 0.0,
+        "distinct_brands": 6,
+        "max_brand_share": 0.1667,
+        "candidate_coverage": 0.7647,
+        "explanation_completeness": 1.0,
+        "warnings": 4,
+        "latency_ms": 394.08
+      },
+      "expectation_failures": [],
+      "passed": true,
+      "top_results": [
+        {
+          "product_id": 1543,
+          "name": "Puma Men Basket-Biz Sneaker",
+          "category_group": "footwear_casual",
+          "colour_family": "black",
+          "score": 0.95,
+          "reasons": [
+            "Category: footwear is part of essentially every look (base 0.95) = 0.95"
+          ]
+        },
+        {
+          "product_id": 1783,
+          "name": "Quechua Men Grey Sandal",
+          "category_group": "footwear_flat",
+          "colour_family": "grey",
+          "score": 0.95,
+          "reasons": [
+            "Category: footwear is part of essentially every look (base 0.95) = 0.95"
+          ]
+        },
+        {
+          "product_id": 2367,
+          "name": "Red Tape Men's Brown Semi Formal Shoe",
+          "category_group": "footwear_formal",
+          "colour_family": "brown",
+          "score": 0.95,
+          "reasons": [
+            "Category: footwear is part of essentially every look (base 0.95) = 0.95"
+          ]
+        },
+        {
+          "product_id": 16740,
+          "name": "Spice Art Women Gold Embroidery Purple Clutch",
+          "category_group": "bag",
+          "colour_family": "purple",
+          "score": 0.85,
+          "reasons": [
+            "Category: a bag is carried with most going-out looks (base 0.85) = 0.85"
+          ]
+        }
+      ],
+      "warnings": [
+        "Could not interpret garment 'spacesuit'; it was ignored rather than guessed.",
+        "Could not interpret colour 'ultraviolet'; it was ignored rather than guessed.",
+        "No anchor colour was resolved, so colour harmony did not contribute to ranking.",
+        "Nothing suitable found in: belt, eyewear, headwear, wallet. These were left out rather than filled with a poor match."
+      ],
+      "categories": [
+        {
+          "category_group": "footwear_casual",
+          "affinity": 0.95,
+          "qualifying": 2805,
+          "confidence": "strong",
+          "note": null
+        },
+        {
+          "category_group": "footwear_dress",
+          "affinity": 0.95,
+          "qualifying": 1320,
+          "confidence": "strong",
+          "note": null
+        },
+        {
+          "category_group": "footwear_flat",
+          "affinity": 0.95,
+          "qualifying": 2302,
+          "confidence": "strong",
+          "note": null
+        },
+        {
+          "category_group": "footwear_formal",
+          "affinity": 0.95,
+          "qualifying": 636,
+          "confidence": "strong",
+          "note": null
+        },
+        {
+          "category_group": "bag",
+          "affinity": 0.85,
+          "qualifying": 2042,
+          "confidence": "strong",
+          "note": null
+        },
+        {
+          "category_group": "beauty_lip",
+          "affinity": 0.8,
+          "qualifying": 418,
+          "confidence": "strong",
+          "note": null
+        },
+        {
+          "category_group": "jewellery",
+          "affinity": 0.8,
+          "qualifying": 1075,
+          "confidence": "strong",
+          "note": null
+        },
+        {
+          "category_group": "beauty_eye",
+          "affinity": 0.7,
+          "qualifying": 137,
+          "confidence": "strong",
+          "note": null
+        },
+        {
+          "category_group": "beauty_face",
+          "affinity": 0.55,
+          "qualifying": 37,
+          "confidence": "moderate",
+          "note": null
+        },
+        {
+          "category_group": "beauty_nails",
+          "affinity": 0.5,
+          "qualifying": 278,
+          "confidence": "moderate",
+          "note": null
+        },
+        {
+          "category_group": "neckwear",
+          "affinity": 0.5,
+          "qualifying": 619,
+          "confidence": "moderate",
+          "note": null
+        },
+        {
+          "category_group": "fragrance",
+          "affinity": 0.45,
+          "qualifying": 600,
+          "confidence": "moderate",
+          "note": null
+        },
+        {
+          "category_group": "watch",
+          "affinity": 0.45,
+          "qualifying": 2515,
+          "confidence": "moderate",
+          "note": null
+        },
+        {
+          "category_group": "eyewear",
+          "affinity": 0.35,
+          "qualifying": 0,
+          "confidence": "none",
+          "note": "No product in this category scored above 0.45 (best was 0.35), so nothing is recommended here rather than filling the slot."
+        },
+        {
+          "category_group": "belt",
+          "affinity": 0.3,
+          "qualifying": 0,
+          "confidence": "none",
+          "note": "No product in this category scored above 0.45 (best was 0.30), so nothing is recommended here rather than filling the slot."
+        },
+        {
+          "category_group": "headwear",
+          "affinity": 0.2,
+          "qualifying": 0,
+          "confidence": "none",
+          "note": "No product in this category scored above 0.45 (best was 0.20), so nothing is recommended here rather than filling the slot."
+        },
+        {
+          "category_group": "wallet",
+          "affinity": 0.15,
+          "qualifying": 0,
+          "confidence": "none",
+          "note": "No product in this category scored above 0.45 (best was 0.15), so nothing is recommended here rather than filling the slot."
+        }
+      ]
+    },
+    {
+      "id": "F05",
+      "group": "edge",
+      "title": "Impossible combination - saree for the gym",
+      "why": "A contradictory brief. The engine cannot refuse, but affinity should strip makeup and jewellery out of a sports request rather than dressing the user up for the gym.",
+      "metrics": {
+        "results": 5,
+        "constraint_satisfaction": 1.0,
+        "constraint_violations": [],
+        "colour_compatibility_rate": 1.0,
+        "colour_denominator": 4,
+        "colour_unresolvable": 0,
+        "category_coverage": 4,
+        "cross_category_rate": 1.0,
+        "beauty_share": 0.0,
+        "distinct_brands": 4,
+        "max_brand_share": 0.2,
+        "candidate_coverage": 0.9286,
+        "explanation_completeness": 1.0,
+        "warnings": 1,
+        "latency_ms": 299.15
+      },
+      "expectation_failures": [],
+      "passed": true,
+      "top_results": [
+        {
+          "product_id": 2616,
+          "name": "Carlton London Women Gold Wedge Sandal",
+          "category_group": "footwear_flat",
+          "colour_family": "gold",
+          "score": 0.9776,
+          "reasons": [
+            "Colour: gold metallic lifts a black base",
+            "Occasion: catalogued as sports wear, which suits a sports (1.00)",
+            "Category: footwear is part of essentially every look (base 0.95, x1.10 for this anchor) = 1.00"
+          ]
+        },
+        {
+          "product_id": 3490,
+          "name": "ADIDAS Women Spry Dark Navy Black Sandal",
+          "category_group": "footwear_flat",
+          "colour_family": "blue",
+          "score": 0.9551,
+          "reasons": [
+            "Colour: blue gives a black base a colour accent",
+            "Occasion: catalogued as sports wear, which suits a sports (1.00)",
+            "Category: footwear is part of essentially every look (base 0.95, x1.10 for this anchor) = 1.00"
+          ]
+        },
+        {
+          "product_id": 4136,
+          "name": "Skechers Women Silver White Blue Shoe",
+          "category_group": "footwear_casual",
+          "colour_family": "silver",
+          "score": 0.7559,
+          "reasons": [
+            "Colour: silver metallic lifts a black base",
+            "Occasion: catalogued as casual wear, which suits a sports (0.70)"
+          ]
+        },
+        {
+          "product_id": 1939,
+          "name": "Geonaute Women Large Outdoor Bag Bag",
+          "category_group": "bag",
+          "colour_family": "blue",
+          "score": 0.8362,
+          "reasons": [
+            "Colour: blue gives a black base a colour accent",
+            "Occasion: catalogued as sports wear, which suits a sports (1.00)",
+            "Shown for variety (1 already in blue)."
+          ]
+        }
+      ],
+      "warnings": [
+        "Nothing suitable found in: footwear_formal. These were left out rather than filled with a poor match."
+      ],
+      "categories": [
+        {
+          "category_group": "footwear_flat",
+          "affinity": 1.0,
+          "qualifying": 1029,
+          "confidence": "strong",
+          "note": null
+        },
+        {
+          "category_group": "bag",
+          "affinity": 0.51,
+          "qualifying": 2960,
+          "confidence": "strong",
+          "note": null
+        },
+        {
+          "category_group": "footwear_casual",
+          "affinity": 0.456,
+          "qualifying": 559,
+          "confidence": "strong",
+          "note": null
+        },
+        {
+          "category_group": "fragrance",
+          "affinity": 0.45,
+          "qualifying": 303,
+          "confidence": "moderate",
+          "note": null
+        },
+        {
+          "category_group": "watch",
+          "affinity": 0.347,
+          "qualifying": 1040,
+          "confidence": "strong",
+          "note": null
+        },
+        {
+          "category_group": "footwear_formal",
+          "affinity": 0.285,
+          "qualifying": 0,
+          "confidence": "none",
+          "note": "No products in this category match the requested audience."
+        },
+        {
+          "category_group": "eyewear",
+          "affinity": 0.231,
+          "qualifying": 469,
+          "confidence": "strong",
+          "note": null
+        },
+        {
+          "category_group": "beauty_lip",
+          "affinity": 0.22,
+          "qualifying": 425,
+          "confidence": "strong",
+          "note": null
+        },
+        {
+          "category_group": "headwear",
+          "affinity": 0.2,
+          "qualifying": 179,
+          "confidence": "strong",
+          "note": null
+        },
+        {
+          "category_group": "jewellery",
+          "affinity": 0.192,
+          "qualifying": 1003,
+          "confidence": "strong",
+          "note": null
+        },
+        {
+          "category_group": "neckwear",
+          "affinity": 0.172,
+          "qualifying": 230,
+          "confidence": "strong",
+          "note": null
+        },
+        {
+          "category_group": "beauty_face",
+          "affinity": 0.165,
+          "qualifying": 37,
+          "confidence": "strong",
+          "note": null
+        },
+        {
+          "category_group": "beauty_nails",
+          "affinity": 0.15,
+          "qualifying": 284,
+          "confidence": "strong",
+          "note": null
+        },
+        {
+          "category_group": "wallet",
+          "affinity": 0.15,
+          "qualifying": 486,
+          "confidence": "strong",
+          "note": null
+        }
+      ]
+    },
+    {
+      "id": "F06",
+      "group": "edge",
+      "title": "Very rare category requested alone",
+      "why": "Headwear is situational and sparse for this brief. The engine must say the choice is limited rather than presenting whatever it has as a strong answer.",
+      "metrics": {
+        "results": 1,
+        "constraint_satisfaction": 1.0,
+        "constraint_violations": [],
+        "colour_compatibility_rate": 1.0,
+        "colour_denominator": 1,
+        "colour_unresolvable": 0,
+        "category_coverage": 1,
+        "cross_category_rate": 1.0,
+        "beauty_share": 0.0,
+        "distinct_brands": 1,
+        "max_brand_share": 1.0,
+        "candidate_coverage": 1.0,
+        "explanation_completeness": 1.0,
+        "warnings": 0,
+        "latency_ms": 16.38
+      },
+      "expectation_failures": [],
+      "passed": true,
+      "top_results": [
+        {
+          "product_id": 2582,
+          "name": "Kalenji Children's Red Cap",
+          "category_group": "headwear",
+          "colour_family": "red",
+          "score": 0.5185,
+          "reasons": [
+            "Colour: red gives a black base a colour accent",
+            "Caveat: headwear is situational (base 0.20, x0.40 for the occasion) = 0.08"
+          ]
+        }
+      ],
+      "warnings": [],
+      "categories": [
+        {
+          "category_group": "headwear",
+          "affinity": 0.08,
+          "qualifying": 55,
+          "confidence": "moderate",
+          "note": null
+        }
+      ]
+    },
+    {
+      "id": "F07",
+      "group": "edge",
+      "title": "Mixed colour-role category requested alone",
+      "why": "beauty_face is mostly foundation, whose shade matches skin rather than a saree. The engine must disclose how much of the category is not colour-matchable instead of implying 155 real options.",
+      "metrics": {
+        "results": 2,
+        "constraint_satisfaction": 1.0,
+        "constraint_violations": [],
+        "colour_compatibility_rate": 1.0,
+        "colour_denominator": 2,
+        "colour_unresolvable": 0,
+        "category_coverage": 1,
+        "cross_category_rate": 1.0,
+        "beauty_share": 1.0,
+        "distinct_brands": 1,
+        "max_brand_share": 1.0,
+        "candidate_coverage": 1.0,
+        "explanation_completeness": 1.0,
+        "warnings": 0,
+        "latency_ms": 11.15
+      },
+      "expectation_failures": [],
+      "passed": true,
+      "top_results": [
+        {
+          "product_id": 55285,
+          "name": "Lakme Gold Dust Shimmer Bronzer",
+          "category_group": "beauty_face",
+          "colour_family": "gold",
+          "score": 0.8624,
+          "reasons": [
+            "Colour: gold metallic lifts a black base",
+            "Occasion: gold shade with a shimmer finish reads as an evening/occasion look, which suits a wedding (0.93); derived from product attributes because the source occasion label is unreliable for beauty products",
+            "Category: base makeup matters but is chosen by skin, not outfit (base 0.55, x1.10 for the occasion) = 0.61"
+          ]
+        },
+        {
+          "product_id": 55250,
+          "name": "Lakme Absolute Sun-Kissed Bronzer",
+          "category_group": "beauty_face",
+          "colour_family": "gold",
+          "score": 0.8371,
+          "reasons": [
+            "Colour: gold metallic lifts a black base",
+            "Occasion: gold shade reads as a dressed-up look, which suits a wedding (0.85); derived from product attributes because the source occasion label is unreliable for beauty products",
+            "Category: base makeup matters but is chosen by skin, not outfit (base 0.55, x1.10 for the occasion) = 0.61",
+            "Shown for variety (1 already from Lakme; 1 already in gold; 1 already of type Highlighter and Blush)."
+          ]
+        }
+      ],
+      "warnings": [],
+      "categories": [
+        {
+          "category_group": "beauty_face",
+          "affinity": 0.605,
+          "qualifying": 155,
+          "confidence": "strong",
+          "note": "118 of 155 products here have a colour that cannot be matched to an outfit (skin tone or packaging); 37 can."
+        }
+      ]
+    },
+    {
+      "id": "F08",
+      "group": "edge",
+      "title": "Completely generic request",
+      "why": "With no anchor there is no colour to coordinate with. The engine should still answer on affinity, but must not invent a colour relationship.",
+      "metrics": {
+        "results": 8,
+        "constraint_satisfaction": 1.0,
+        "constraint_violations": [],
+        "colour_compatibility_rate": null,
+        "colour_denominator": 0,
+        "colour_unresolvable": 0,
+        "category_coverage": 7,
+        "cross_category_rate": 1.0,
+        "beauty_share": 0.125,
+        "distinct_brands": 7,
+        "max_brand_share": 0.25,
+        "candidate_coverage": 0.7647,
+        "explanation_completeness": 1.0,
+        "warnings": 2,
+        "latency_ms": 358.7
+      },
+      "expectation_failures": [],
+      "passed": true,
+      "top_results": [
+        {
+          "product_id": 1543,
+          "name": "Puma Men Basket-Biz Sneaker",
+          "category_group": "footwear_casual",
+          "colour_family": "black",
+          "score": 0.95,
+          "reasons": [
+            "Category: footwear is part of essentially every look (base 0.95) = 0.95"
+          ]
+        },
+        {
+          "product_id": 1783,
+          "name": "Quechua Men Grey Sandal",
+          "category_group": "footwear_flat",
+          "colour_family": "grey",
+          "score": 0.95,
+          "reasons": [
+            "Category: footwear is part of essentially every look (base 0.95) = 0.95"
+          ]
+        },
+        {
+          "product_id": 2367,
+          "name": "Red Tape Men's Brown Semi Formal Shoe",
+          "category_group": "footwear_formal",
+          "colour_family": "brown",
+          "score": 0.95,
+          "reasons": [
+            "Category: footwear is part of essentially every look (base 0.95) = 0.95"
+          ]
+        },
+        {
+          "product_id": 16740,
+          "name": "Spice Art Women Gold Embroidery Purple Clutch",
+          "category_group": "bag",
+          "colour_family": "purple",
+          "score": 0.85,
+          "reasons": [
+            "Category: a bag is carried with most going-out looks (base 0.85) = 0.85"
+          ]
+        }
+      ],
+      "warnings": [
+        "No anchor was given, so recommendations are ranked on occasion, style and preferences only - there is no colour to coordinate with.",
+        "Nothing suitable found in: belt, eyewear, headwear, wallet. These were left out rather than filled with a poor match."
+      ],
+      "categories": [
+        {
+          "category_group": "footwear_casual",
+          "affinity": 0.95,
+          "qualifying": 2805,
+          "confidence": "strong",
+          "note": null
+        },
+        {
+          "category_group": "footwear_dress",
+          "affinity": 0.95,
+          "qualifying": 1320,
+          "confidence": "strong",
+          "note": null
+        },
+        {
+          "category_group": "footwear_flat",
+          "affinity": 0.95,
+          "qualifying": 2302,
+          "confidence": "strong",
+          "note": null
+        },
+        {
+          "category_group": "footwear_formal",
+          "affinity": 0.95,
+          "qualifying": 636,
+          "confidence": "strong",
+          "note": null
+        },
+        {
+          "category_group": "bag",
+          "affinity": 0.85,
+          "qualifying": 2042,
+          "confidence": "strong",
+          "note": null
+        },
+        {
+          "category_group": "beauty_lip",
+          "affinity": 0.8,
+          "qualifying": 418,
+          "confidence": "strong",
+          "note": null
+        },
+        {
+          "category_group": "jewellery",
+          "affinity": 0.8,
+          "qualifying": 1075,
+          "confidence": "strong",
+          "note": null
+        },
+        {
+          "category_group": "beauty_eye",
+          "affinity": 0.7,
+          "qualifying": 137,
+          "confidence": "strong",
+          "note": null
+        },
+        {
+          "category_group": "beauty_face",
+          "affinity": 0.55,
+          "qualifying": 37,
+          "confidence": "moderate",
+          "note": null
+        },
+        {
+          "category_group": "beauty_nails",
+          "affinity": 0.5,
+          "qualifying": 278,
+          "confidence": "moderate",
+          "note": null
+        },
+        {
+          "category_group": "neckwear",
+          "affinity": 0.5,
+          "qualifying": 619,
+          "confidence": "moderate",
+          "note": null
+        },
+        {
+          "category_group": "fragrance",
+          "affinity": 0.45,
+          "qualifying": 600,
+          "confidence": "moderate",
+          "note": null
+        },
+        {
+          "category_group": "watch",
+          "affinity": 0.45,
+          "qualifying": 2515,
+          "confidence": "moderate",
+          "note": null
+        },
+        {
+          "category_group": "eyewear",
+          "affinity": 0.35,
+          "qualifying": 0,
+          "confidence": "none",
+          "note": "No product in this category scored above 0.45 (best was 0.35), so nothing is recommended here rather than filling the slot."
+        },
+        {
+          "category_group": "belt",
+          "affinity": 0.3,
+          "qualifying": 0,
+          "confidence": "none",
+          "note": "No product in this category scored above 0.45 (best was 0.30), so nothing is recommended here rather than filling the slot."
+        },
+        {
+          "category_group": "headwear",
+          "affinity": 0.2,
+          "qualifying": 0,
+          "confidence": "none",
+          "note": "No product in this category scored above 0.45 (best was 0.20), so nothing is recommended here rather than filling the slot."
+        },
+        {
+          "category_group": "wallet",
+          "affinity": 0.15,
+          "qualifying": 0,
+          "confidence": "none",
+          "note": "No product in this category scored above 0.45 (best was 0.15), so nothing is recommended here rather than filling the slot."
+        }
+      ]
+    },
+    {
+      "id": "F09",
+      "group": "edge",
+      "title": "Anchor colour that resolves to Multi",
+      "why": "A multi-coloured anchor has no single hue. The engine should fall back to a neutral 'unresolved' colour score and lean on the other signals rather than guessing a hue.",
+      "metrics": {
+        "results": 8,
+        "constraint_satisfaction": 1.0,
+        "constraint_violations": [],
+        "colour_compatibility_rate": 0.0,
+        "colour_denominator": 7,
+        "colour_unresolvable": 7,
+        "category_coverage": 7,
+        "cross_category_rate": 1.0,
+        "beauty_share": 0.375,
+        "distinct_brands": 7,
+        "max_brand_share": 0.25,
+        "candidate_coverage": 1.0,
+        "explanation_completeness": 1.0,
+        "warnings": 1,
+        "latency_ms": 250.48
+      },
+      "expectation_failures": [],
+      "passed": true,
+      "top_results": [
+        {
+          "product_id": 2870,
+          "name": "Catwalk Women Ethnic Red Heels",
+          "category_group": "footwear_dress",
+          "colour_family": "red",
+          "score": 0.7756,
+          "reasons": [
+            "Occasion: catalogued as ethnic wear, which suits a wedding (1.00)",
+            "Category: footwear is part of essentially every look (base 0.95, x1.15 for the occasion, x1.05 for this anchor) = 1.00"
+          ]
+        },
+        {
+          "product_id": 31700,
+          "name": "Fabindia Women Ananya Silver Earrings",
+          "category_group": "jewellery",
+          "colour_family": "silver",
+          "score": 0.7756,
+          "reasons": [
+            "Occasion: catalogued as ethnic wear, which suits a wedding (1.00)",
+            "Category: jewellery is the primary way a look is dressed up (base 0.80, x1.20 for the occasion, x1.20 for this anchor) = 1.00"
+          ]
+        },
+        {
+          "product_id": 55488,
+          "name": "Revlon Bronze Shimmer Colorburst Lip Gloss 30",
+          "category_group": "beauty_lip",
+          "colour_family": "gold",
+          "score": 0.7516,
+          "reasons": [
+            "Occasion: gold shade with a shimmer finish reads as an evening/occasion look, which suits a wedding (0.93); derived from product attributes because the source occasion label is unreliable for beauty products",
+            "Category: lip colour is the most visible makeup decision (base 0.80, x1.20 for the occasion, x1.10 for this anchor) = 1.00"
+          ]
+        },
+        {
+          "product_id": 47532,
+          "name": "Portia Women Black & Gold-Toned Sandals",
+          "category_group": "footwear_flat",
+          "colour_family": "black",
+          "score": 0.7137,
+          "reasons": [
+            "Occasion: catalogued as ethnic wear, which suits a wedding (1.00)",
+            "Category: footwear is part of essentially every look (base 0.95, x0.70 for the occasion, x1.10 for this anchor) = 0.73"
+          ]
+        }
+      ],
+      "warnings": [
+        "Limited choice in: watch."
+      ],
+      "categories": [
+        {
+          "category_group": "beauty_lip",
+          "affinity": 1.0,
+          "qualifying": 425,
+          "confidence": "strong",
+          "note": null
+        },
+        {
+          "category_group": "footwear_dress",
+          "affinity": 1.0,
+          "qualifying": 1319,
+          "confidence": "strong",
+          "note": null
+        },
+        {
+          "category_group": "jewellery",
+          "affinity": 1.0,
+          "qualifying": 1011,
+          "confidence": "strong",
+          "note": null
+        },
+        {
+          "category_group": "bag",
+          "affinity": 0.892,
+          "qualifying": 2032,
+          "confidence": "strong",
+          "note": null
+        },
+        {
+          "category_group": "beauty_eye",
+          "affinity": 0.805,
+          "qualifying": 138,
+          "confidence": "strong",
+          "note": null
+        },
+        {
+          "category_group": "footwear_flat",
+          "affinity": 0.731,
+          "qualifying": 1022,
+          "confidence": "strong",
+          "note": null
+        },
+        {
+          "category_group": "beauty_face",
+          "affinity": 0.605,
+          "qualifying": 155,
+          "confidence": "strong",
+          "note": "118 of 155 products here have a colour that cannot be matched to an outfit (skin tone or packaging); 37 can."
+        },
+        {
+          "category_group": "neckwear",
+          "affinity": 0.575,
+          "qualifying": 288,
+          "confidence": "strong",
+          "note": null
+        },
+        {
+          "category_group": "beauty_nails",
+          "affinity": 0.55,
+          "qualifying": 282,
+          "confidence": "strong",
+          "note": null
+        },
+        {
+          "category_group": "fragrance",
+          "affinity": 0.495,
+          "qualifying": 435,
+          "confidence": "strong",
+          "note": null
+        },
+        {
+          "category_group": "watch",
+          "affinity": 0.158,
+          "qualifying": 5,
+          "confidence": "thin",
+          "note": "Only 5 products in this category are a good match, so the selection is limited."
+        }
+      ]
+    }
+  ]
+}
