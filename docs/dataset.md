@@ -9,7 +9,7 @@ regenerated on each run. Nothing here is estimated.
 
 ---
 
-## A. Dataset license status
+## Dataset license status
 
 **Verified: MIT.**
 
@@ -19,7 +19,7 @@ regenerated on each run. Nothing here is estimated.
 | Upstream source | [`paramaggarwal/fashion-product-images-small`](https://www.kaggle.com/datasets/paramaggarwal/fashion-product-images-small) (Kaggle) |
 | Declared license | **MIT** |
 | Attribution | Param Aggarwal (dataset author) |
-| Access | Anonymous — no Kaggle account, no HF token, no credentials of any kind |
+| Access | Anonymous. No Kaggle account, no HF token, no credentials of any kind |
 
 **How it was verified.** Neither Hugging Face mirror declares a license in its dataset
 card; the HF card states only that the data "was obtained from" the Kaggle dataset. The
@@ -49,18 +49,18 @@ without re-confirming this.**
 
 ---
 
-## B. Final usable product count
+## Final usable product count
 
 | Stage | Rows |
 |---|---|
 | Source rows | 44,072 |
-| Removed — non-product categories (Home, Sporting Goods, Free Items) | −131 |
-| Removed — duplicate listings (identical image bytes) | −776 |
-| Removed — missing/blank product name | −0 |
-| Removed — unusable image | −0 |
+| Removed, non-product categories (Home, Sporting Goods, Free Items) | −131 |
+| Removed, duplicate listings (identical image bytes) | −776 |
+| Removed, missing/blank product name | −0 |
+| Removed, unusable image | −0 |
 | **Final catalog** | **43,165** |
 
-Retention: **97.9%**. The source is unusually clean — no missing names, no broken images.
+Retention: **97.9%**. The source is unusually clean. No missing names, no broken images.
 
 ### On what was *not* removed
 
@@ -82,7 +82,7 @@ on **identical image bytes** only, and shared names are *flagged* instead
 
 ---
 
-## C. Category distribution
+## Category distribution
 
 ### By domain
 
@@ -115,11 +115,11 @@ casual 33,637 · sports 3,976 · **ethnic 3,188** · formal 2,243 · smart_casua
 
 ### By audience
 
-women 18,749 · men 22,328 · unisex 2,088 — of which adult 42,078, kids 1,087
+women 18,749 · men 22,328 · unisex 2,088, of which adult 42,078, kids 1,087
 
 ---
 
-## D. Beauty / personal-care product count
+## Beauty / personal-care product count
 
 **2,133 products.** 1,563 are women's or unisex.
 
@@ -141,7 +141,7 @@ Real brands present, with counts across colour cosmetics: **Lakme** 101, **Color
 
 ---
 
-## E. Fashion / accessory product count
+## Fashion / accessory product count
 
 **41,032 products** across apparel (20,628), accessories (11,216) and footwear (9,188).
 
@@ -157,8 +157,7 @@ Categories that matter for cross-category recommendation:
 | Eyewear | 1,058 | | |
 | Neckwear (dupatta, stole, scarf, tie) | 619 | | |
 
-**Anchor candidates: 18,183. Complement candidates: 19,576.** No category group is both —
-enforced by test.
+**Anchor candidates: 18,183. Complement candidates: 19,576.** No category group is both, enforced by test.
 
 ### Flagship query is answerable
 
@@ -171,23 +170,23 @@ wallet 486 · eyewear 469 · fragrance 435 · **beauty_lip 425** · neckwear 288
 
 ---
 
-## F. baseColour coverage
+## baseColour coverage
 
-**100% — zero nulls across all 43,165 products, on fashion and beauty alike.**
+**100%, zero nulls across all 43,165 products, on fashion and beauty alike.**
 This is the attribute the whole cross-category concept rests on, and it is complete.
 
 | Metric | Value |
 |---|---|
 | `base_colour` populated | **100.00%** |
 | `colour_family` resolved | **100.00%** |
-| Representative hex resolved | 99.09% (391 "Multi" products have no single hex — correct) |
+| Representative hex resolved | 99.09% (391 "Multi" products have no single hex, correct) |
 | Source colour values | 46 → normalised to **15 families** |
 
 **Family distribution:** black 9,566 · blue 6,668 · white 5,515 · brown 3,579 ·
 grey 3,398 · red 2,974 · green 2,479 · pink 1,910 · purple 1,749 · beige 1,447 ·
 silver 1,124 · yellow 835 · gold 779 · orange 751 · multi 391
 
-### Colour semantics — not every colour means the same thing
+### Colour semantics, not every colour means the same thing
 
 A meaningful finding: `beauty_face` is 127/155 beige, because foundation and compact
 shades describe **skin**, not a style choice. Matching a foundation shade to a saree would
@@ -201,7 +200,7 @@ be nonsense. Every product therefore carries a `colour_role`:
 
 Only the 36,637 `style` products may be colour-matched to an anchor.
 
-### Colour cosmetics by family — the usable matching surface
+### Colour cosmetics by family, the usable matching surface
 
 | Family | lip | eye | nails | face |
 |---|---|---|---|---|
@@ -221,9 +220,9 @@ black (kajal), which is accurate for this market.
 
 ---
 
-## G. Image availability
+## Image availability
 
-**100% — all 44,072 source images decoded successfully; zero failures.**
+**100%, all 44,072 source images decoded successfully; zero failures.**
 
 Validation actually opened and decoded every image rather than checking that a field was
 non-empty.
@@ -238,10 +237,10 @@ non-empty.
 | Every catalog product has an image | **Yes** |
 
 **Resolution:** 60×80 for 43,153 of 43,165. A tail of 12 products is slightly smaller
-(53–54 px wide; 75–79 px tall) — usable, but recorded per product in `image_width` /
+(53–54 px wide; 75–79 px tall), usable, but recorded per product in `image_width` /
 `image_height` so the engine can handle them.
 
-**Storage.** The source JPEGs are 60×80 yet average **12.8 KB** — stored at near-zero
+**Storage.** The source JPEGs are 60×80 yet average **12.8 KB**, stored at near-zero
 compression. Re-encoding the identical pixels at JPEG q88 produced a **62 MB** store from
 **555 MB** of source bytes, a ~9× reduction with no visible difference at this size.
 
@@ -252,34 +251,34 @@ fetch real 900×1200 photography for any subset without downloading the 6.3 GB m
 
 ---
 
-## H. Data quality issues
+## Data quality issues
 
 | # | Issue | Severity | Status |
 |---|---|---|---|
-| 1 | **`usage` is meaningless for beauty** — 2,136 of 2,139 personal-care rows are labelled "Casual" regardless of product | **High** | Carried, but every beauty row is flagged `occasion_reliable = 0`. **2,133 rows unreliable, 41,032 reliable.** Beauty occasion must be derived in the engine, never read from this column. |
+| 1 | **`usage` is meaningless for beauty**, 2,136 of 2,139 personal-care rows are labelled "Casual" regardless of product | **High** | Carried, but every beauty row is flagged `occasion_reliable = 0`. **2,133 rows unreliable, 41,032 reliable.** Beauty occasion must be derived in the engine, never read from this column. |
 | 2 | **No price data anywhere** | High (by decision, deferred) | Out of scope for the catalog build per project decision. No price column exists in the catalog. **No prices were fabricated.** |
 | 3 | **No ratings, reviews or popularity signal** | Medium | The dataset has none. Popularity must come from within-catalog frequency (e.g. brand × category density) or be dropped. Not invented. |
-| 4 | **Generic display names** — **16,780 products (38.9%)** share their display name with at least one other product; 82 are all named "Lucera Women Silver Earrings" | **High for text retrieval** | Not removed (see §B). Flagged via `name_is_generic` / `name_shared_by`. At 38.9%, name-based semantic similarity alone would collapse large blocks of the catalog into indistinguishable candidates — the engine must weight structured attributes, not just `text_blob`. |
-| 5 | **Source colour errors** — e.g. ids 47153/47154 share one photograph but are labelled "Pink Capris" and "Black Capris" | Low | Caught by image-hash de-duplication; one of each such pair removed (776 total). |
-| 6 | **Casing inconsistency in names** — "United Colors of Benetton" also appears as "Of", "united Colors Of", "united colors of" | Low | Resolved: brand matching is case-insensitive with a canonical casing per brand. Recovered 63 products. |
-| 7 | **Occasion vocabulary is thin at the top end** — only 28 "party" and 67 "smart_casual" products | Medium | Real limitation. "Ethnic" (3,188) and "Formal" (2,243) are well populated, so wedding/festive queries are supported; explicit "party" queries will need to map onto adjacent occasions in the engine. |
-| 8 | **Thin beauty sub-categories** — Eyeshadow 32, Highlighter & Blush 37, Mascara 12, Concealer 11 | Medium | Usable but shallow. the engine must report per-category candidate counts and say when a category is thin rather than returning a poor match. |
+| 4 | **Generic display names**, **16,780 products (38.9%)** share their display name with at least one other product; 82 are all named "Lucera Women Silver Earrings" | **High for text retrieval** | Not removed (see §B). Flagged via `name_is_generic` / `name_shared_by`. At 38.9%, name-based semantic similarity alone would collapse large blocks of the catalog into indistinguishable candidates. The engine must weight structured attributes, not just `text_blob`. |
+| 5 | **Source colour errors**, e.g. ids 47153/47154 share one photograph but are labelled "Pink Capris" and "Black Capris" | Low | Caught by image-hash de-duplication; one of each such pair removed (776 total). |
+| 6 | **Casing inconsistency in names**, "United Colors of Benetton" also appears as "Of", "united Colors Of", "united colors of" | Low | Resolved: brand matching is case-insensitive with a canonical casing per brand. Recovered 63 products. |
+| 7 | **Occasion vocabulary is thin at the top end**, only 28 "party" and 67 "smart_casual" products | Medium | Real limitation. "Ethnic" (3,188) and "Formal" (2,243) are well populated, so wedding/festive queries are supported; explicit "party" queries will need to map onto adjacent occasions in the engine. |
+| 8 | **Thin beauty sub-categories**, Eyeshadow 32, Highlighter & Blush 37, Mascara 12, Concealer 11 | Medium | Usable but shallow. the engine must report per-category candidate counts and say when a category is thin rather than returning a poor match. |
 | 9 | **No brand column in source** | Low | Resolved: brand derived from the corpus (see §I). 99.59% coverage, 392 brands. |
 | 10 | **Catalog is 2007–2019 Myntra data** | Low | Products are dated; the recommendation problem is unaffected. |
 | 11 | **Inefficient source image encoding** (12.8 KB per 60×80 JPEG) | Low | Resolved by re-encoding (§G). |
 
 ---
 
-## I. Final normalized schema
+## Final normalized schema
 
-`data/processed/catalog.parquet` / `.csv` / `.db` — **43,165 rows × 32 columns.**
+`data/processed/catalog.parquet` / `.csv` / `.db`, **43,165 rows × 32 columns.**
 
 ### Identity
 | Column | Type | Coverage | Notes |
 |---|---|---|---|
 | `product_id` | int | 100% | Source `id`; primary key, unique index |
 | `name` | text | 100% | Cleaned `productDisplayName` |
-| `brand` | text | **99.59%** | Derived — no source column (see below) |
+| `brand` | text | **99.59%** | Derived, no source column (see below) |
 
 ### Category
 | Column | Type | Coverage | Notes |
@@ -289,7 +288,7 @@ fetch real 900×1200 photography for any subset without downloading the 6.3 GB m
 | `product_type` | text | 100% | Source `articleType` (141 values) |
 | `master_category`, `sub_category` | text | 100% | Source values, retained for traceability |
 
-### Colour — the cross-category join key
+### Colour, the cross-category join key
 | Column | Type | Coverage | Notes |
 |---|---|---|---|
 | `base_colour` | text | **100%** | Source `baseColour`, 46 values |
@@ -313,8 +312,8 @@ fetch real 900×1200 photography for any subset without downloading the 6.3 GB m
 ### Roles
 | Column | Type | Notes |
 |---|---|---|
-| `can_be_anchor` | bool | 18,183 — the garment a user says they are wearing |
-| `can_be_complement` | bool | 19,576 — recommendable alongside an anchor |
+| `can_be_anchor` | bool | 18,183. The garment a user says they are wearing |
+| `can_be_complement` | bool | 19,576, recommendable alongside an anchor |
 
 ### Image
 | Column | Type | Notes |
@@ -322,7 +321,7 @@ fetch real 900×1200 photography for any subset without downloading the 6.3 GB m
 | `image_width`, `image_height` | int | Measured by decoding, not assumed |
 | `image_md5` | text | Duplicate detection (parquet/CSV only) |
 | `image_ok` | bool | True for every catalog row |
-| `source_row_index` | int | Offset for high-resolution fetch — **verified 6/6** |
+| `source_row_index` | int | Offset for high-resolution fetch, **verified 6/6** |
 
 ### Derived text
 | Column | Type | Notes |
@@ -344,37 +343,7 @@ of Benetton"). Brands whose first token *is* a colour word are recovered separat
 
 ---
 
-## J. Files created
-
-### Code
-| Path | Purpose |
-|---|---|
-| `src/catalog/taxonomy.py` | Controlled vocabularies: colour map (46→15), domain map, 141 article types → 30 groups, occasion, audience, colour-role rules |
-| `src/catalog/normalize.py` | Pure normalisation functions — no I/O, no scoring |
-| `scripts/ingest_catalog.py` | The reproducible pipeline: download → validate → normalise → clean → export → report |
-| `tests/test_normalize.py` | **47 unit tests, all passing**, run without the dataset |
-
-### Data (`data/processed/`, 87 MB)
-| File | Size | Contents |
-|---|---|---|
-| `catalog.parquet` | 3.6 MB | Normalised catalog, 43,165 × 32 |
-| `images_thumb.parquet` | 62 MB | Re-encoded 60×80 images, keyed by product_id |
-| `image_fetch_index.csv` | 0.5 MB | product_id → hi-res mirror row offset |
-
-### Cache & docs
-| Path | Notes |
-|---|---|
-| `data/raw/parquet/*.parquet` | 259 MB source cache; re-downloaded only if absent |
-| `docs/data_quality_report.json` | Machine-readable metrics |
-| `docs/DATA_QUALITY_REPORT.md` | This document |
-| `static/sample_images/` | 24 decoded PNGs for visual QA (not committed) |
-
-**Not created, by design:** no UI, no API, no LLM code, no scoring or ranking logic, no
-price column, no fabricated products.
-
----
-
-## K. How the data can be reproduced
+## How the data can be reproduced
 
 ```bash
 pip install pandas pyarrow pillow pytest      # already present in this environment
@@ -402,7 +371,7 @@ Pinned source: `ashraq/fashion-product-images-small`, 44,072 rows, 2 parquet sha
 
 ---
 
-## L. What the engine needs from the catalog
+## What the engine needs from the catalog
 
 the engine is the recommendation engine. The foundation gives it the following, and these
 are the things it should build on:
@@ -425,7 +394,7 @@ are the things it should build on:
    beauty product is a bug.
 7. **`colour_role`.** Only `style` products may be colour-matched. Never match a
    foundation shade (`skin_match`) or a perfume bottle (`packaging`) to an outfit colour.
-8. **`name_is_generic` — this affects 38.9% of the catalog.** Text similarity over
+8. **`name_is_generic`, this affects 38.9% of the catalog.** Text similarity over
    "Lucera Women Silver Earrings" cannot separate 82 different earrings. Semantic
    retrieval over `text_blob` must be combined with structured attribute matching, not
    used on its own.
@@ -436,17 +405,16 @@ are the things it should build on:
 
 ### Still to be built in the engine
 
-11. **Occasion enrichment for beauty** — the one derived attribute the source cannot give.
+11. **Occasion enrichment for beauty**, the one derived attribute the source cannot give.
 12. **A colour-harmony table** over the 15 families (contrast, analogous, metallic,
     neutral-pairing), which does not exist yet.
-13. **Category-affinity weights** — which complement groups matter for which anchor.
+13. **Category-affinity weights**, which complement groups matter for which anchor.
 14. **Embeddings + index** over `text_blob`.
 15. **A working subset decision.** The catalog is the full 43,165. the engine may want to
-    restrict to women's/unisex adult products (20,350) for the core experience —
-    the data supports either choice, and nothing has been narrowed prematurely.
+    restrict to women's/unisex adult products (20,350) for the core experience. The data supports either choice, and nothing has been narrowed prematurely.
 
 ### Explicitly still absent
 
 No price, no ratings, no reviews, no user interactions. Any the engine component that needs
-these must either derive a documented proxy or be dropped — **not** filled with invented
+these must either derive a documented proxy or be dropped, **not** filled with invented
 values.

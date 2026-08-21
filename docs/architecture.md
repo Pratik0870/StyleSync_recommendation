@@ -39,8 +39,8 @@ HTTP response
 | Path | Lines | Responsibility |
 |---|---|---|
 | `src/intent/schema.py` | 236 | `ExtractedIntent` (LLM contract), `NormalisedIntent` (engine contract), normalisation |
-| `src/intent/fallback.py` | 140 | Deterministic parser — the no-LLM path |
-| `src/intent/llm.py` | 180 | Claude client, circuit breaker, typed failures |
+| `src/intent/fallback.py` | 140 | Deterministic parser, the no-LLM path |
+| `src/intent/llm.py` | 180 | Provider wrapper, circuit breaker, typed failures |
 | `src/intent/extractor.py` | 99 | LLM → fallback orchestration |
 | `src/api/models.py` | 161 | Public request/response models |
 | `src/api/images.py` | 79 | the catalog build image store |
@@ -49,7 +49,7 @@ HTTP response
 ### What the API layer deliberately does not do
 
 It does not rank, filter, score, or select. It has no product logic of its own. The one
-substantive thing it adds beyond transport is *intent normalisation* — and that is
+substantive thing it adds beyond transport is *intent normalisation*, and that is
 implemented by calling the engine's own resolvers, not by reimplementing them.
 
 **the engine logic was not modified**, with one exception documented in §G.
@@ -60,7 +60,7 @@ implemented by calling the engine's own resolvers, not by reimplementing them.
 
 Two objects, deliberately separated.
 
-### `ExtractedIntent` — the only thing an LLM may produce
+### `ExtractedIntent`, the only thing an LLM may produce
 
 | Field | Type | Meaning |
 |---|---|---|
@@ -72,17 +72,17 @@ Two objects, deliberately separated.
 | `preferred_colours` | `str[]` | Colours the *recommendations* should be |
 | `include_categories` | `str[]` | Categories explicitly asked for |
 | `exclude_categories` | `str[]` | Categories explicitly ruled out |
-| `descriptors` | `str[]` | Material/pattern/cut only — silk, printed, leather |
+| `descriptors` | `str[]` | Material/pattern/cut only, silk, printed, leather |
 
 `model_config = {"extra": "forbid"}`.
 
 **Read what is absent: there is no `product_id`, `product_name`, `brand`, `price`,
 `rating`, `score`, or `image` field.** A model that hallucinated a product would have
-nowhere to put it. Hallucinated products cannot reach a response — not because they are
+nowhere to put it. Hallucinated products cannot reach a response, not because they are
 filtered out afterwards, but because the schema provides no channel for them. Two tests
 assert this structurally, including one that fails if a future edit adds such a field.
 
-### `NormalisedIntent` — what the engine receives
+### `NormalisedIntent`, what the engine receives
 
 Produced by `normalise()`, which runs every field through the engine's own resolvers:
 
@@ -94,11 +94,11 @@ Produced by `normalise()`, which runs every field through the engine's own resol
 | `style` | `normalise_style` | dropped → `rejected` |
 | `gender` | literal set | dropped → `rejected` |
 | `include/exclude_categories` | `CATEGORY_PHRASES` → the catalog build groups | dropped → `rejected` |
-| `descriptors` | joined → engine `free_text` | — |
+| `descriptors` | joined → engine `free_text` |, |
 
 The LLM therefore cannot introduce a colour, garment, occasion, style or category the
 engine does not already understand. Everything dropped is returned in `intent.rejected`
-and surfaced in `notes` — **normalised or rejected, never guessed**.
+and surfaced in `notes`, **normalised or rejected, never guessed**.
 
 `CATEGORY_PHRASES` maps everyday words onto the taxonomy: "makeup" → the four colour-
 cosmetic groups, "accessories" → jewellery + bag, "shoes" → the four footwear groups.
@@ -107,27 +107,27 @@ cosmetic groups, "accessories" → jewellery + bag, "shoes" → the four footwea
 
 ## LLM responsibility
 
-**One job: natural language → structured intent.** Model `claude-opus-5`,
+**One job: natural language to structured intent.** Default model `gemini-2.5-flash` on Gemini, or `claude-opus-5` on Anthropic,
 `messages.parse()` with `output_format=ExtractedIntent` and `output_config={"effort":
 "low"}` (extraction is a simple task; low effort keeps it fast).
 
 | The LLM does | The LLM cannot |
 |---|---|
-| Read the user's sentence | See the catalog — it is never sent |
+| Read the user's sentence | See the catalog. It is never sent |
 | Fill a fixed attribute schema | Name, invent or select a product |
 | Map synonyms (shaadi → wedding) | Set a price, rating or popularity |
 | Detect negation ("no jewellery") | Influence a score or a ranking |
-| — | Return any field outside the schema (`extra: forbid`) |
+|, | Return any field outside the schema (`extra: forbid`) |
 
 Three independent guarantees, not one:
 
-1. **Structural** — the schema has no product-shaped field.
-2. **Vocabulary** — output is re-resolved against the engine's own lexicons.
-3. **Selection** — product choice happens entirely inside the the engine, from the
+1. **Structural.** The schema has no product-shaped field.
+2. **Vocabulary**, output is re-resolved against the engine's own lexicons.
+3. **Selection**, product choice happens entirely inside the the engine, from the
    catalog, after intent is fixed.
 
-**Failure handling.** `IntentLLMError` wraps every failure mode — missing credentials,
-rate limit, HTTP error, connection failure, schema-validation failure — so the caller has
+**Failure handling.** `IntentLLMError` wraps every failure mode, missing credentials,
+rate limit, HTTP error, connection failure, schema-validation failure, so the caller has
 exactly one thing to catch. A **circuit breaker** opens after 3 consecutive failures for
 60 s, so a dead provider costs one timeout rather than one per request. Timeout 12 s,
 query truncated at 2,000 chars.
@@ -138,7 +138,7 @@ query truncated at 2,000 chars.
 
 Not a stub. `src/intent/fallback.py` parses the same query shapes using the same
 vocabularies the engine already ships, and its output goes through the **identical**
-`normalise()` call — so both paths are bound by the same contract.
+`normalise()` call, so both paths are bound by the same contract.
 
 Verified output with no API key:
 
@@ -156,7 +156,7 @@ characters before a category word flips it to an exclusion; "party" is not doubl
 as both occasion and style.
 
 **Honest limits.** It cannot handle unusual phrasing, implicit occasion ("my cousin's big
-day"), or vocabulary outside the lexicons. Those are reported as unparsed — the response
+day"), or vocabulary outside the lexicons. Those are reported as unparsed. The response
 carries *"Nothing usable could be extracted from the request"* rather than a guess.
 
 **This environment has no Anthropic credentials, so every test and every example in this
@@ -179,7 +179,7 @@ doubles.
 CORS is enabled for `localhost:3000` and `localhost:5173` so the the frontend can
 develop against this.
 
-### `/health` — states what it can actually do
+### `/health`, states what it can actually do
 
 ```json
 {
@@ -196,7 +196,7 @@ develop against this.
 }
 ```
 
-Constructing an Anthropic client does **not** validate credentials — it succeeds with
+Constructing an Anthropic client does **not** validate credentials, it succeeds with
 none set and only fails at request time. An early build reported `"available": true`
 here and then fell back on every request. `/health` now checks that a credential source
 actually resolved, so it cannot claim a capability the service does not have.
@@ -266,8 +266,7 @@ curl -X POST http://127.0.0.1:8000/recommend -H 'Content-Type: application/json'
 }
 ```
 
-Every value above is a real catalog value. Nothing is defaulted, padded or invented —
-`brand` is `null` for the 0.41% of products with no derivable brand rather than filled in.
+Every value above is a real catalog value. Nothing is defaulted, padded or invented, `brand` is `null` for the 0.41% of products with no derivable brand rather than filled in.
 
 ### Structured input (no query)
 
@@ -295,14 +294,13 @@ extracted value without re-parsing prose:
 ### Other options
 
 `use_llm: false` forces the deterministic parser. `include_score_breakdown: true` returns
-the full per-component decomposition (component, raw, weight, contribution, detail) —
-opt-in, so the default payload stays clean.
+the full per-component decomposition (component, raw, weight, contribution, detail), opt-in, so the default payload stays clean.
 
 ---
 
 ## Error handling
 
-Every failure returns a consistent body — `{error, detail, code}` — with a user-facing
+Every failure returns a consistent body, `{error, detail, code}`, with a user-facing
 message and an actionable detail. Nothing is hidden.
 
 | Case | Status | Code | Behaviour |
@@ -311,11 +309,11 @@ message and an actionable detail. Nothing is hidden.
 | Unknown field (`budget: 5000`) | 422 | `invalid_request` | `"budget: Extra inputs are not permitted"` |
 | `limit` out of range | 422 | `invalid_request` | Bounds stated |
 | Unknown `product_id` | 404 | `unknown_product` | *"Anchor products must be real catalog items."* |
-| Unknown product image | 404 | `image_not_found` | — |
-| LLM unavailable | 200 | — | Falls back; the reason appears in `notes` |
-| Invalid LLM output | 200 | — | Unsupported values dropped, listed in `intent.rejected` |
-| Unintelligible query | 200 | — | *"Nothing usable could be extracted…"* |
-| No candidates | 200 | — | Empty list + *"Nothing was returned rather than filling the list with poor matches."* |
+| Unknown product image | 404 | `image_not_found` |, |
+| LLM unavailable | 200 |, | Falls back; the reason appears in `notes` |
+| Invalid LLM output | 200 |, | Unsupported values dropped, listed in `intent.rejected` |
+| Unintelligible query | 200 |, | *"Nothing usable could be extracted…"* |
+| No candidates | 200 |, | Empty list + *"Nothing was returned rather than filling the list with poor matches."* |
 | Catalog not built | 503 | `engine_unavailable` | Names the script to run |
 | Unexpected exception | 500 | `internal_error` | Logged with traceback; type and message returned |
 
@@ -328,12 +326,12 @@ message and an actionable detail. Nothing is hidden.
 | `"ultraviolet"` | `purple` (contains "violet") | `None` |
 | `"blackberry"` | `black` | `None` |
 | `"greenhouse"` | `green` | `None` |
-| `"laptop bag"` | `("topwear", "Tops")` — contains "top" | `(None, None)` |
+| `"laptop bag"` | `("topwear", "Tops")`, contains "top" | `(None, None)` |
 
 the API feeds these resolvers free text from users *and from an LLM*, so a loose match
 silently hands the engine an attribute nobody asked for. Fixed to whole-word matching
 (longest phrase wins, so "navy blue" still beats "blue"). This is a correctness fix in
-vocabulary resolution — **no scoring, ranking, affinity or colour-harmony logic was
+vocabulary resolution, **no scoring, ranking, affinity or colour-harmony logic was
 touched.** the 15/15 evaluation scenarios still pass, and a regression test was
 added to the the engine test suite.
 
@@ -343,7 +341,7 @@ purple anchor the user never mentioned.
 
 ---
 
-## Test results
+## Testing
 
 **167 passing, ~8 seconds.**
 
@@ -458,12 +456,11 @@ Inter for UI. Editorial retail spacing, generous whitespace, 3:4 product imagery
 
 **Dev proxy.** `vite.config.js` proxies `/recommend`, `/health`, `/images`, `/products`
 and `/categories` to `http://127.0.0.1:8000`. The API returns relative image URLs
-(`/images/123.jpg`), so they resolve untouched — no rewriting on the client. For a build
+(`/images/123.jpg`), so they resolve untouched, no rewriting on the client. For a build
 served from another origin, `VITE_API_BASE` sets the absolute base.
 
 **Request shaping.** `buildRecommendPayload()` omits empty values, so a blank control never
-overwrites something the parser extracted, and only sends fields the backend accepts —
-which matters because the backend rejects unknown fields with 422.
+overwrites something the parser extracted, and only sends fields the backend accepts, which matters because the backend rejects unknown fields with 422.
 
 **Correction flow.** the API guarantees structured fields beat anything parsed from the
 query. The intent editor writes its values to the URL, they go back as structured fields,
@@ -474,26 +471,26 @@ colour → red, response comes back with `intent.colour = "red"`.
 
 ### Screens implemented
 
-**Home** — hero (“Find what completes your look.”), the natural-language input, six
-example prompts that submit on click, a section showing the four complement families the
+**Home**, hero (“Find what completes your look.”), the natural-language input, six
+example queries that run on click, a section showing the four complement families the
 catalog actually covers, and a four-step explanation of how matching works. Closes with a
 plain statement that this is a demo over an open dataset with no prices or ratings.
 
-**Results** — the original query, an intent summary bar (`Saree · Black · Wedding ·
-Elegant`) with a **Refine** panel, a count (“16 products to complete it — across 7
+**Results**, the original query, an intent summary bar (`Saree · Black · Wedding ·
+Elegant`) with a **Refine** panel, a count (“16 products to complete it, across 7
 categories”), then one section per category. Each section carries the engine's own
 confidence, a collapsed “Why this category” holding the affinity arithmetic verbatim, and
 a card grid. Rejected intent values and thin categories are disclosed rather than hidden.
 
-**Product card** — real image, brand, name, category · colour, colour swatch, match
+**Product card**, real image, brand, name, category · colour, colour swatch, match
 percentage, and the top “why this matches” reason. No price, rating, review or stock.
 
-**Product detail** — large image, name, brand, category/type/colour pills, a “Why this was
+**Product detail**, large image, name, brand, category/type/colour pills, a “Why this was
 recommended” panel (only when arrived at from a recommendation, carried in router state),
 and a catalog attribute table. Unset attributes read “Not recorded”. States plainly that
 the catalog has no price, rating or review data.
 
-**Refinement** — chips for colour (with swatches), occasion, style, gender, plus include /
+**Refinement**, chips for colour (with swatches), occasion, style, gender, plus include /
 exclude category pickers. Clicking an active chip clears it back to unset. **Update
 recommendations** is disabled until something changes.
 
@@ -502,14 +499,14 @@ recommendations** is disabled until something changes.
 ### UX decisions
 
 1. **Absence is shown as absence.** Unset intent fields render as an em dash and unknown
-   attributes as “Not recorded” — never as a plausible-looking default.
+   attributes as “Not recorded”, never as a plausible-looking default.
 2. **The engine's reasoning is surfaced but not shoved forward.** The affinity arithmetic
    is real product differentiation, but `beauty_lip: lip colour is the most visible makeup
    decision (base 0.80, ×1.20 …) = 1.00` reads like a dashboard. It now sits behind a
    “Why this category” disclosure; the card-level reason stays visible.
 3. **Category order comes from the engine.** An earlier build sorted Beauty first, which
    overrode the engine's diversity re-ranking. Sections now appear in the order the
-   backend ranked them — for a black saree that surfaces Heels first, which is also the
+   backend ranked them, for a black saree that surfaces Heels first, which is also the
    better answer.
 4. **Confidence is only mentioned when it is not “strong”**, so the common case stays
    quiet and a genuine caveat stands out.
@@ -518,10 +515,10 @@ recommendations** is disabled until something changes.
 6. **Each failure state does something different**: a dead backend prints the command to
    start it; an unparsed query shows the sentence shape that works; an empty result says
    nothing was returned rather than padding the page.
-7. **Per-image failure is handled per card** — a broken image falls back to a labelled
+7. **Per-image failure is handled per card.** A broken image falls back to a labelled
    placeholder inside that card and does not affect the rest of the grid.
 8. **The LLM status is a quiet badge**, and the deterministic parser is labelled “Built-in
-   parser”, not an error — it is a first-class path, not a degradation.
+   parser”, not an error. It is a normal path, not a broken one.
 
 ---
 
@@ -555,7 +552,7 @@ python scripts/evaluate_engine.py         # 15/15 scenarios
 cd frontend && npm run build              # production bundle
 ```
 
-The frontend works with no API key — the backend falls back to the deterministic parser
+The frontend works with no API key, the backend falls back to the deterministic parser
 and the header shows “Built-in parser”.
 
 ---
