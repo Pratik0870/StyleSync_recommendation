@@ -34,6 +34,31 @@ Normal catalog search mainly matches words from a query with product information
 
 This project combines structured query understanding with a recommendation engine so that the system can understand the request and return relevant products or outfit combinations.
 
+## Use Case and Motivation
+
+The use case is a shopper who has one item, or an occasion, and needs the rest.
+They know they are going to a wedding, or they already own a black saree, but
+they do not know which shoes, jewellery or lip colour go with it.
+
+I chose this because it is a compatibility problem rather than a similarity
+problem, and the two need different techniques. Recommending another saree to
+someone holding a saree is a search problem with an obvious answer.
+Recommending the lipstick is not, because no purchase history links a drape to a
+lip colour. The relationship has to be derived from product attributes: colour,
+occasion and formality.
+
+A second problem appeared while building it, and it shaped most of the design. A
+system that only models "what goes with what" will answer a search for `red
+shirt` with a handbag, because the handbag really does go with a red shirt. It
+is a correct answer to a question nobody asked. Separating "does this match what
+I searched for" from "does this go with it" became the main design decision in
+the project.
+
+The dataset also made the cross-category part possible. Clothing and beauty
+products sit in the same catalog under the same colour vocabulary, so a black
+saree and a maroon lipstick are described in one attribute space and can be
+compared directly.
+
 ## How It Works
 
 ```text
@@ -208,15 +233,48 @@ If gender is required for an outfit and is not provided, the application asks th
 
 ## Evaluation
 
-The project includes automated evaluation scenarios and test cases covering product searches, outfit requests and edge cases.
+### Why not precision, recall, NDCG or MAP
 
-The latest project verification included:
+Those metrics need relevance labels, and this dataset has none. It is product
+metadata with no user interactions, no ratings and no purchase history, so there
+is no record of which product a person would actually have picked. Reporting a
+precision score would have meant inventing the labels it was measured against,
+so I did not report one.
 
-- **328 automated tests passing**
-- **15/15 evaluation scenarios passing**
-- Mean measured recommendation latency of approximately **240 ms** in the documented evaluation run
+### What is measured instead
 
-The evaluation checks whether the returned recommendations satisfy the expected constraints for the scenario, such as product type, gender, colour or occasion.
+Each scenario declares in advance the properties a correct answer must have, and
+those properties are checked automatically. The expectations were written before
+the evaluator was first run. From `scripts/evaluate_engine.py`:
+
+| Metric | Result | What it checks |
+|---|---|---|
+| Scenarios passed | 15 / 15 | Declared expectations met |
+| Constraint satisfaction | 1.00 | Every product exists in the catalog, is a valid complement, and respects gender and category exclusions |
+| Colour compatibility | 0.91 | Share of colour-carrying products whose harmony with the anchor is above threshold |
+| Explanation completeness | 1.00 | Share of products carrying a reason and a scored component |
+| Candidate coverage | 0.93 | Categories that produced a recommendation, over categories considered |
+| Mean category coverage | 4.87 | Distinct categories in a returned look |
+| Mean distinct brands | 5.2 | Brand spread per result set |
+| Largest single brand share | 0.28 | Diversity check |
+| Latency | 240 ms mean | One recommendation on a warm engine |
+
+Diversity, coverage and latency are from the assignment's suggested list and are
+measurable here. Constraint satisfaction and explanation completeness cover
+things that matter for this system specifically: a recommendation must be a real
+catalog product of the right gender, and it must be able to say why it was
+chosen.
+
+A separate retrieval benchmark compares text methods on 12 queries where
+correctness can be checked from attributes: attribute filtering scored 1.00
+precision@10, sentence embeddings 0.92 and TF-IDF 0.84. This is why text
+relevance carries the smallest weight in the scoring formula, and why embeddings
+were measured and then not adopted.
+
+There are also **328 automated tests** covering catalog normalization, scoring,
+API contracts, outfit composition, intent extraction and image handling.
+
+Full results are in [docs/evaluation.md](docs/evaluation.md).
 
 ## Example Test Cases
 
@@ -228,6 +286,49 @@ The evaluation checks whether the returned recommendations satisfy the expected 
 | `wedding outfit for men` | Build a men's wedding look |
 | `what should I wear to a wedding?` | Ask for gender before building the outfit |
 | `I am wearing a red saree` | Treat the saree as the user's existing item and suggest complementary products |
+
+### Failure and edge scenarios
+
+These are the cases where the system either refuses to answer or answers
+imperfectly. They are part of the evaluation suite and behave as described.
+
+| Scenario | What happens |
+|---|---|
+| Unknown product id as the anchor | Returns 404 with a message. No substitute is guessed. |
+| Every category excluded by the request | Returns nothing and warns, rather than ignoring the filter. |
+| Unsupported occasion, for example "funeral" | Reported as unrecognised instead of being mapped to something close. |
+| Query with nothing usable in it, for example `zzzz qqqq` | Says nothing could be extracted and returns a broad selection. |
+| Impossible combination, for example a saree for the gym | Returns what the catalog can support and warns that the occasion is being served from adjacent labels. |
+| Rare category requested alone, for example mascara | Section is marked thin. It is not padded with poor matches. |
+| Outfit requested without a gender | Asks which gender before building anything, because a mixed outfit is never correct. |
+| Anchor colour that resolves to "Multi" | Colour harmony is skipped for that product rather than guessed. |
+| Gemini quota exhausted or provider unavailable | Falls back to the rule-based parser. The interface shows "Standard matching". |
+| Product with a wrong or low quality source photograph | Reported as low quality rather than presented as sharp. |
+
+Two of these are worth calling out as genuine weaknesses rather than deliberate
+behaviour. The rule-based parser uses a fixed vocabulary, so an unusual phrasing
+like "smart but not too formal for a dinner date" is understood less precisely
+than it would be by the language model. And a handful of catalog products carry
+a photograph of the wrong item, which no amount of ranking can fix.
+
+## Assumptions
+
+- The catalog is treated as the source of truth. If a product is labelled
+  formal, the system trusts that label even when the product name suggests
+  otherwise.
+- A query that names a garment is a request to see that garment. A query that
+  says the user already owns it is a request for complements.
+- Gender is a hard requirement rather than a preference. A men's kurta is not a
+  weaker match for a women's outfit, it is the wrong answer.
+- Colour compatibility can be approximated from hue relationships between colour
+  families. This is a simplification, since the catalog records no saturation or
+  lightness.
+- Occasion labels are reliable for clothing but not for beauty, where 2,136 of
+  2,139 products are labelled "Casual". Beauty suitability is derived instead.
+- Category affinity weights are reasonable editorial priors. With no interaction
+  data there is nothing to learn them from.
+- Users are anonymous. There is no history, so every query is answered on its
+  own.
 
 ## Known Limitations
 
@@ -315,16 +416,24 @@ Open the local URL shown by Vite.
 
 ## Deployment
 
-Add the live application URL here after deployment.
+**Live application:** https://style-sync-recommendation.vercel.app
 
-The deployment requires:
+**API:** https://stylesync-api-iv3g.onrender.com (health check at `/health`)
 
-1. Hosting the FastAPI backend.
-2. Making the catalog available during the build or runtime.
-3. Configuring environment variables such as `GEMINI_API_KEY`.
-4. Building the React frontend with the production backend URL.
+The frontend is a static Vite build on Vercel. The backend runs on Render, where
+the catalog is built during deploy by `scripts/ingest_catalog.py`. The two are
+connected by two environment variables: `VITE_API_BASE` on Vercel points at the
+API, and `CORS_ORIGINS` on Render allows the frontend origin.
 
-> Do not commit the `.env` file or API keys to GitHub.
+Both run on free tiers, which has two visible effects. The backend sleeps after
+about 15 minutes of inactivity, so the first request after a pause takes 30 to
+60 seconds. The disk is not persistent, so high resolution images are re-fetched
+on demand after a restart and the first page view is slower than later ones.
+
+Deployment steps are in [DEPLOYMENT.md](DEPLOYMENT.md).
+
+> The `.env` file is git-ignored. API keys are set in the hosting dashboards,
+> never committed.
 
 ## Project Structure
 
