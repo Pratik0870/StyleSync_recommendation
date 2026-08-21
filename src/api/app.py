@@ -403,10 +403,17 @@ def product_image(
     # product gains a larger file its URL changes, so a cached smaller version
     # cannot mask it. The ETag lets a client on the bare URL revalidate.
     etag = hashlib.md5(data).hexdigest()[:16]
-    # A pending URL has no fixed content yet, so it must not be immutable.
-    cache = (f"public, max-age={CACHE_SECONDS}, immutable"
-             if v and v not in {"pending"}
-             else "public, max-age=3600, must-revalidate")
+    resolved = services.images.has_large(product_id)
+    if not resolved:
+        # The thumbnail is a stand-in until the real photograph is fetched.
+        # Caching it would pin a 60x80 in the browser long after the full-size
+        # file has landed on the server.
+        cache = "no-store"
+    elif v and v != "pending":
+        # The version names the stored resolution, so the bytes cannot change.
+        cache = f"public, max-age={CACHE_SECONDS}, immutable"
+    else:
+        cache = "public, max-age=3600, must-revalidate"
     return Response(
         content=data, media_type=MEDIA_TYPE,
         headers={"Cache-Control": cache, "ETag": f'"{etag}"'},
