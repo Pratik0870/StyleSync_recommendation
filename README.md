@@ -347,10 +347,10 @@ More in [docs/limitations.md](docs/limitations.md).
 
 Not deployed yet. The app runs locally with the commands above.
 
-To deploy it, the backend needs a host with enough disk for the catalog and
-image store (around 90 MB, built by the ingest script), the frontend needs to be
-built and pointed at that backend, and `GEMINI_API_KEY` needs to be set in the
-host environment.
+The setup for deploying it is in [DEPLOYMENT.md](DEPLOYMENT.md): a `render.yaml`
+blueprint for the backend, and the frontend as a static build pointed at it with
+`VITE_API_BASE`. The backend allows only localhost origins by default, so
+`CORS_ORIGINS` has to name the frontend URL once that exists.
 
 ## Project structure
 

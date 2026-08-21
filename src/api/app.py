@@ -109,11 +109,17 @@ app = FastAPI(
     version=VERSION,
 )
 
-# The React frontend is a later phase; allow it to develop against this locally.
+# Local dev origins by default. When the frontend is deployed to another host,
+# set CORS_ORIGINS to a comma-separated list of its URLs.
+DEV_ORIGINS = ["http://localhost:3000", "http://localhost:5173",
+               "http://127.0.0.1:3000", "http://127.0.0.1:5173"]
+_configured = os.environ.get("CORS_ORIGINS", "").strip()
+ALLOWED_ORIGINS = ([o.strip() for o in _configured.split(",") if o.strip()]
+                   or DEV_ORIGINS)
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://localhost:5173",
-                   "http://127.0.0.1:3000", "http://127.0.0.1:5173"],
+    allow_origins=ALLOWED_ORIGINS,
     allow_methods=["GET", "POST"],
     allow_headers=["*"],
 )

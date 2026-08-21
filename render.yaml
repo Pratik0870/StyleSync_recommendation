@@ -1,0 +1,22 @@
+# Render blueprint for the StyleSync backend.
+#
+# The catalog is not committed, so it is built during deploy. The ingest script
+# downloads the public dataset and writes about 90 MB into data/processed.
+#
+# After the backend is live, deploy the frontend separately (see DEPLOYMENT.md)
+# and set CORS_ORIGINS here to the frontend's URL.
+services:
+  - type: web
+    name: stylesync-api
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt && python scripts/ingest_catalog.py
+    startCommand: python -m uvicorn src.api.app:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.11"
+      - key: GEMINI_API_KEY
+        sync: false          # set this in the Render dashboard, not in git
+      - key: CORS_ORIGINS
+        sync: false          # the deployed frontend URL
