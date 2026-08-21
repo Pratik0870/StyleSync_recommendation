@@ -459,6 +459,68 @@ StyleSync_recommendation/
 - A deterministic fallback keeps the application working when the external AI provider is unavailable.
 - Recommendations are generated from actual catalog items.
 
+## Comparison With Existing Products
+
+The catalog comes from Myntra, and the product covers both fashion and beauty,
+so Myntra and Nykaa are the closest reference points. The interface borrows from
+that style of site: a search bar at the top, results grouped into category
+sections, and product cards showing brand, name, colour and image.
+
+### Similarities
+
+- Products are grouped into browsable categories such as wardrobe, beauty,
+  accessories and footwear.
+- Results are cards with brand, product name and attributes, in a grid.
+- Search accepts a free text query rather than only filters.
+- Both fashion and beauty products sit in the same catalog and can appear in one
+  set of results.
+
+### Differences
+
+- Those sites are built around similarity and popularity. If you search for a
+  red shirt you get more red shirts, ranked partly by what other people bought.
+  StyleSync answers a second question as well: what goes with the red shirt.
+- There is no collaborative filtering here. Real platforms have purchase and
+  click history; this dataset has none, so recommendations come from product
+  attributes only.
+- StyleSync builds a complete outfit when the query does not name a product.
+  Myntra and Nykaa mostly leave that to editorial content or curated collections.
+- Every recommendation shows a reason. Commercial sites rarely explain why an
+  item was surfaced.
+- There are no prices, ratings, reviews or stock, because the dataset has none.
+  Those drive a lot of real ranking and none of it is available here.
+
+### Current limitations compared with those platforms
+
+- No personalization. A real platform knows what you looked at last week; this
+  answers each query on its own.
+- No business signals. Real ranking factors in margin, stock, delivery time and
+  sponsored placement.
+- The catalog is fixed and roughly 43,000 items, against millions on a live site,
+  so some requests have thin coverage.
+- No search-as-you-type, filters on results, wishlists or cart. The interface is
+  built to demonstrate the recommendation logic, not to be a store.
+
+### Areas for improvement
+
+- Filters on the results page for price band, brand or size, which is the first
+  thing a shopper reaches for.
+- Faster first load. Images are fetched on demand, so a cold start is slower
+  than a real site would allow.
+- Better handling of loose phrasing when the language model is unavailable.
+
+### What I would build next with more time
+
+- Log which recommendations users click, then use that to replace the
+  hand-chosen category affinity weights with learned ones. That is the single
+  change that would most improve ranking quality.
+- Build a relevance test set from those clicks, which would make precision and
+  NDCG meaningful for this system.
+- Add a "more like this, but in blue" control on each card, so a user can steer
+  the results instead of retyping the query.
+- Let a user save an outfit and come back to it, which is the first step towards
+  personalization.
+
 ## What I Learned
 
 The main challenges in this project were understanding user intent, separating product search from outfit composition, handling imperfect catalog data and keeping the application functional when an external AI service is unavailable.
